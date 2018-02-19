@@ -31,7 +31,11 @@ private:
 	CListen*	m_pSocket ;			// our document's one and only listening socket (service port)
 	CPtrList	m_listConnects ;	// list of active connections
 	// Logging
+#if _MFC_VER < 0x0700
 	ofstream	m_fileLog ;
+#else
+	std::ofstream	m_fileLog ;
+#endif
 
 // Operations
 public:
