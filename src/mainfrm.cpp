@@ -106,6 +106,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_pTray->SetState ( ID_ICON_IDLE ) ;
 
 	// create a sanity timer
+	m_nSanityTime = theApp.m_nSanityTime ;
 	SetTimer ( IDT_SANITY_TIME, m_nSanityTime*1000, NULL ) ;
 	return 0;
 }

@@ -291,7 +291,7 @@ BOOL CClient::SendReplyHeader ( CFile& cFile )
 	// 2
 	CTime rTime = CTime::GetCurrentTime() ;
 	tmp.Format ( "Date: %s\r\n",
-				rTime.FormatGmt("%a, %d %b %Y %H:%M:%S %Z") ) ;
+				rTime.FormatGmt("%a, %d %b %Y %H:%M:%S GMT") ) ;
 	SendData ( tmp ) ;
 	// 3
 	SendData ( "Server: Webster/1.0\r\n" ) ;
@@ -316,7 +316,7 @@ BOOL CClient::SendReplyHeader ( CFile& cFile )
 	if ( cFile.GetStatus ( rStatus ) )
 	{
 		tmp.Format ( "Last-modified: %s\r\n",
-					rStatus.m_mtime.FormatGmt("%a, %d %b %Y %H:%M:%S %Z") ) ;
+					rStatus.m_mtime.FormatGmt("%a, %d %b %Y %H:%M:%S GMT") ) ;
 		SendData ( tmp ) ;
 	}
 	// 7
