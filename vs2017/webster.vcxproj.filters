@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{8b4f15f6-fb25-4cf1-be4b-e1388069b968}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;hpj;bat;for;f90</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{22b2b682-ca4e-49c0-84d3-24db9ad51e5b}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;fi;fd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{2092e87f-76d3-4134-89ab-f7b9b6c9aaf3}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;cnt;rtf;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\SRC\cclient.CPP">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SRC\clisten.CPP">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SRC\Config.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SRC\MainFrm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SRC\Props.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SRC\service.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SRC\Splash.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SRC\StdAfx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SRC\TrayNot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SRC\WebDoc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SRC\Webster.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SRC\WebView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\res\Webster.rc">
+      <Filter>Source Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\H\Cclient.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\H\Clisten.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\H\CONFIG.H">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\H\LOGGER.H">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\H\MAINFRM.H">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\H\PROPS.H">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\res\resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\H\SPLASH.H">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\H\STDAFX.H">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\H\TRAYNOT.H">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\H\WEBDOC.H">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\H\WEBSTER.H">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\H\WEBVIEW.H">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\res\Connect.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\res\Idle.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\res\Toolbar.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\RES\Webster.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\res\Webster.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>
