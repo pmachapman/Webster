@@ -106,6 +106,7 @@ static const int MethodTableLen = sizeof(MethodTable)/
 void CClient::ParseReq()
 {
 	CStringList cList ;	// list of parsed command tokens
+	int i = 0 ; // Counter
 
 	// save the request line for our log record
 	if ( m_cList.IsEmpty() )	// always check IsEmpty() first
@@ -149,7 +150,7 @@ void CClient::ParseReq()
 		return ;		
 	}
 	m_cURI = cList.GetNext ( pos ) ;	// pointing to METHOD now
-	for ( int i = 0 ; i < MethodTableLen ; i++ )
+	for ( i = 0 ; i < MethodTableLen ; i++ )
 	{
 		if ( m_cURI.CompareNoCase ( MethodTable[i].key ) == 0 )
 		{
@@ -223,7 +224,7 @@ void CClient::ProcessReq()
 	}
 
 	// try to determine the send method based on the file type
-	char *ext = strrchr ( m_cLocalFNA, '.' ) ;
+	const char *ext = strrchr ( m_cLocalFNA, '.' ) ;
 	if (  m_cURI == "\\" )		// blind request?
 	{
 		m_pDoc->DbgVMessage ( "   Blind request\n" ) ;
@@ -546,7 +547,8 @@ static const int MsgTableSize = sizeof(MsgTable)
 void CClient::SendCannedMsg ( int idErr, ... )
 {
 	BOOL bGotIt = FALSE ;
-	for ( int i = 0 ; i < MsgTableSize ; i++ )
+	int i = 0 ;
+	for ( i = 0 ; i < MsgTableSize ; i++ )
 	{
 		if ( MsgTable[i].id == idErr )
 		{
