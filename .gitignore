@@ -1,6 +1,7 @@
 Debug
 Release
 *.bak
+*.log
 *.ncb
 *.opt
 *.plg

@@ -280,8 +280,7 @@ void CWebDoc::OpenLogfile()
 						  filebuf::sh_read ) ;
 #else
 	m_fileLog.open ( theApp.m_LogPath,
-		std::ios::ate |
-		std::ios_base::in ) ;
+		std::ios::ate) ;
 #endif;
 }
 
@@ -289,6 +288,7 @@ void CWebDoc::WriteLog ( COMLOGREC& LogRec )
 {
 	if ( theApp.m_bLogEnable && m_fileLog.is_open() )
 	{
+#if _MFC_VER < 0x0700
 		m_fileLog << LogRec.client << " "
 					 << LogRec.inetd << " "
 					 << LogRec.username << " ["
@@ -296,6 +296,15 @@ void CWebDoc::WriteLog ( COMLOGREC& LogRec )
 					 << LogRec.request << "\" "
 					 << LogRec.status << " "
 					 << LogRec.bytes << "\n" ;
+#else
+		m_fileLog << (LPCTSTR)LogRec.client << " "
+					 << (LPCTSTR)LogRec.inetd << " "
+					 << (LPCTSTR)LogRec.username << " ["
+					 << (LPCTSTR)LogRec.datetime.Format("%d/%b/%Y %H:%M:%S") << "] \""
+					 << (LPCTSTR)LogRec.request << "\" "
+					 << LogRec.status << " "
+					 << LogRec.bytes << "\n" ;
+#endif
 	}
 }
 
