@@ -12,7 +12,11 @@ class CWebDoc;	// fwd ref
 
 class CListen : public CSocket
 {
+#ifdef __BORLANDC__
+	DECLARE_DYNAMIC(CListen)
+#else
 	DECLARE_DYNAMIC(CListen);
+#endif
 private:
 	CListen(const CListen& rSrc);         // no implementation
 	void operator=(const CListen& rSrc);  // no implementation

@@ -274,13 +274,13 @@ void CWebDoc::OpenLogfile()
 		return ;
 
 	// now try to open/create the file
-#if _MFC_VER < 0x0700
-	m_fileLog.open ( theApp.m_LogPath,
-						  ios::ate,
-						  filebuf::sh_read ) ;
-#else
+#if _MFC_VER >= 0x0700 || __BORLANDC__
 	m_fileLog.open ( theApp.m_LogPath,
 		std::ios::ate) ;
+#else
+	m_fileLog.open ( theApp.m_LogPath,
+		ios::ate,
+		filebuf::sh_read ) ;
 #endif;
 }
 

@@ -292,7 +292,11 @@ static const int _WSATableLen = sizeof(_WSATable)/sizeof(struct _tagWSATable) ;
 LPSTR CWebApp::MapErrMsg ( DWORD dwErr )
 {
 	// __declspec (thread) necessary if you will use multiple threads
+#if __BORLANDC__
+	static char szMsgBuf[128] ;
+#else
 	__declspec (thread) static char szMsgBuf[128] ;
+#endif
 
 	if ( dwErr > WSABASEERR )	// check for WinSock error
 	{

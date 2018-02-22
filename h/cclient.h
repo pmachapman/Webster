@@ -14,7 +14,11 @@ class CWebDoc;
 
 class CClient : public CSocket
 {
+#ifdef __BORLANDC__
+	DECLARE_DYNAMIC(CClient)
+#else
 	DECLARE_DYNAMIC(CClient);
+#endif
 private:
 	CClient(const CClient& rSrc);	// no implementation
 	void operator=(const CClient& rSrc);	// no implementation

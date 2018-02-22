@@ -2,12 +2,17 @@
 .vscode
 Debug
 Release
+bin
+obj
 *.bak
+*.cfg
 *.log
+*.map
 *.ncb
 *.opensdf
 *.opt
 *.plg
+*.res
 *.sdf
 *.suo
 *.user
