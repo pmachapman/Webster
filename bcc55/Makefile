@@ -1,6 +1,6 @@
 #	Compiler Information
 CC = bcc32
-LIBPATH = D:\BORLAND\BCC55\LIB;D:\MSDEV\MFC\LIB\BORLAND
+LIBPATH = D:\BORLAND\BCC55\LIB;D:\BORLAND\BCC55\LIB\PSDK;D:\MSDEV\MFC\LIB\BORLAND
 INCLUDEPATH = D:\BORLAND\BCC55\INCLUDE;D:\MSDEV\MFC\INCLUDE;D:\MSDEV\INCLUDE
 ILINK = ilink32
 
@@ -50,7 +50,7 @@ $(OBJ)\webview.obj
 $(BIN)\webster,webster
 NafxcW.lib+
 import32.lib+
-cw32.lib,
+cw32mt.lib,
 webster.res
 |
 
@@ -106,6 +106,7 @@ webster.cfg: makefile
 -v
 -Os
 -d
+-VF4
 -WE
 -I$(INCLUDEPATH)
 -I$(INC)
@@ -113,7 +114,6 @@ webster.cfg: makefile
 -D_X86_
 -D_MSC_VER=900
 -D_WINDOWS
--D_WCHAR_T_DEFINED
 -D_AFX_PORTABLE
 -D_AFX_NOFORCE_LIBS
 -D_CRT_PORTABLE
