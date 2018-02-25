@@ -15,4 +15,6 @@ obj
 *.res
 *.sdf
 *.suo
+*.td2
+*.tr2
 *.user
