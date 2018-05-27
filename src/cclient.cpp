@@ -33,8 +33,6 @@ CClient::CClient(CWebDoc* m_pParentDoc)
 	m_LogRec.request = "";
 	m_LogRec.status = 200;
 	m_LogRec.bytes = 0;
-
-	m_pHE = NULL;
 }
 
 CClient::~CClient()

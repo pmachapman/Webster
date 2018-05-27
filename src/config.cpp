@@ -192,11 +192,11 @@ END_MESSAGE_MAP()
 void CHTML::OnHtmlBrowse()
 {
 	// these are used for decomposing/recomposing file pathnames
-	char	gcDrive[3],			// initial directory path
-		gcDir[MAX_PATH],
-		gcFname[MAX_PATH],
-		gcExt[MAX_PATH];
-	char	gcPath[MAX_PATH];	// recomposed direcory path
+	char	gcDrive[_MAX_DRIVE],			// initial directory path
+		gcDir[_MAX_PATH],
+		gcFname[_MAX_FNAME],
+		gcExt[_MAX_EXT];
+	char	gcPath[_MAX_PATH];	// recomposed direcory path
 
 	// create basic file open dialog
 	CFileDialog dlg(TRUE,
@@ -215,19 +215,20 @@ void CHTML::OnHtmlBrowse()
 	pEB_Path->GetWindowText(PathName);
 	dlg.m_ofn.lpstrInitialDir = PathName;
 	// set the initial filename
-	char fna[MAX_PATH];
+	char fna[_MAX_PATH];
 	CEdit *pEB_Name = (CEdit *)GetDlgItem(IDC_HTML_DEFAULT);
 	// get current filename from edit box
-	pEB_Name->GetWindowText(fna, MAX_PATH);
+	pEB_Name->GetWindowText(fna, _MAX_PATH);
 	dlg.m_ofn.lpstrFile = fna;
 	if (dlg.DoModal() == IDOK)	// get new filename
 	{
 		// get components of new filename
 		m_DefaultPath = dlg.GetPathName();	// full filename
-		_splitpath(m_DefaultPath, gcDrive, gcDir, gcFname, gcExt);
+		_splitpath_s(m_DefaultPath, gcDrive, gcDir, gcFname, gcExt);
+		_splitpath_s(m_DefaultPath, gcDrive, gcDir, gcFname, gcExt);
 
 		// display path only in IDC_HTML_PATH
-		_makepath(gcPath, gcDrive, gcDir, NULL, NULL);
+		_makepath_s(gcPath, gcDrive, gcDir, NULL, NULL);
 		pEB_Path->SetWindowText(gcPath);
 
 		// show filename only in IDC_HTML_DEFAULT
@@ -250,11 +251,11 @@ void CHTML::OnHtmlBrowse()
 void CLogging::OnLogBrowse()
 {
 	// these are used for decomposing/recomposing file pathnames
-	char	gcDrive[3],			// initial directory path
-		gcDir[MAX_PATH],
-		gcFname[MAX_PATH],
-		gcExt[MAX_PATH];
-	char	gcPath[MAX_PATH];	// recomposed direcory path
+	char	gcDrive[_MAX_DRIVE],			// initial directory path
+		gcDir[_MAX_PATH],
+		gcFname[_MAX_FNAME],
+		gcExt[_MAX_EXT];
+	char	gcPath[_MAX_PATH];	// recomposed direcory path
 
 	// create basic file open dialog
 	CFileDialog dlg(TRUE,
@@ -269,12 +270,12 @@ void CLogging::OnLogBrowse()
 	CString PathName;
 	CEdit *pEB_Path = (CEdit *)GetDlgItem(IDC_LOG_PATH);
 	pEB_Path->GetWindowText(PathName);
-	_splitpath(PathName, gcDrive, gcDir, gcFname, gcExt);
-	_makepath(gcPath, gcDrive, gcDir, NULL, NULL);
+	_splitpath_s(PathName, gcDrive, gcDir, gcFname, gcExt);
+	_makepath_s(gcPath, gcDrive, gcDir, NULL, NULL);
 	dlg.m_ofn.lpstrInitialDir = gcPath;
 	// set the initial filename
-	char fna[MAX_PATH];
-	_makepath(fna, NULL, NULL, gcFname, gcExt);
+	char fna[_MAX_PATH];
+	_makepath_s(fna, NULL, NULL, gcFname, gcExt);
 	dlg.m_ofn.lpstrFile = fna;
 	if (dlg.DoModal() == IDOK)	// get new filename
 	{

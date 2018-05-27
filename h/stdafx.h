@@ -10,5 +10,5 @@
 #endif // _AFX_NO_AFXCMN_SUPPORT
 #include <afxsock.h>		// MFC socket extensions
 
-
+#include "compat.h"			// CRT secure function compatibility
 

@@ -86,7 +86,12 @@ BOOL CWebApp::InitInstance()
 
 	// If we're running on Windows 95, we want to be hidden initially.
 	// We know we're running from the notification icon in the system tray
-	if ((GetVersion() & 0xff) >= 4)
+#if _MFC_VER < 0x0700
+	BOOL bWin95 = (GetVersion() & 0xff) >= 4;
+#else
+	BOOL bWin95 = TRUE;
+#endif
+	if (bWin95)
 	{
 		m_bOkToClose = FALSE;	// for overriding WM_CLOSE
 		m_nCmdShow = SW_HIDE;
@@ -104,8 +109,7 @@ BOOL CWebApp::InitInstance()
 	AddDocTemplate(pDocTemplate);
 
 	// Display the operating tip if running under Windows 95
-	if (((GetVersion() & 0xff) >= 4) &&
-		GetProfileInt("", "StartTip", 0) == 0)
+	if (bWin95 && GetProfileInt("", "StartTip", 0) == 0)
 	{
 		CSplash dlg;
 		dlg.m_bNoNag = FALSE;

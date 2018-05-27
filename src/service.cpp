@@ -123,7 +123,7 @@ void CClient::ParseReq()
 
 	// parse the request line into a list of tokens
 	LPSTR tempmsg = new char[cReq.GetLength() + 1];	// allow for EOS
-	strcpy(tempmsg, cReq);
+	strcpy_s(tempmsg, cReq.GetLength() + 1, cReq);
 	char *pBOL = tempmsg;
 	for (char *pEOL = strpbrk(pBOL, " ");
 		pEOL;
@@ -299,9 +299,12 @@ BOOL CClient::SendReplyHeader(CFile& cFile)
 	// 4
 	SendData("MIME-version: 1.0\r\n");
 	// 5
-	char ext[5];
-	_splitpath(cFile.GetFileName(), NULL, NULL, NULL, ext);
-	tmp = ext;
+	char	gcDrive[_MAX_DRIVE],
+			gcDir[_MAX_PATH],
+			gcFname[_MAX_FNAME],
+			gcExt[_MAX_EXT];
+	_splitpath_s(cFile.GetFileName(), gcDrive, gcDir, gcFname, gcExt);
+	tmp = gcExt;
 	for (int i = 0; i < MIME_len; i++)
 	{
 		if (tmp.CompareNoCase(MIME_Table[i].ext) == 0)
@@ -504,10 +507,10 @@ BOOL CClient::ResolveClientName(BOOL bUseDNS)
 		}
 		else
 		{
-			if (m_pHE = GetHostByAddr((LPCSTR)m_PeerIP))
+			if (m_PeerName = GetHostByAddr((LPCSTR)m_PeerIP))
 			{
-				m_LogRec.client = m_pHE->h_name;
-				m_pDoc->VMessage(" %s (%s)\n", m_pHE->h_name, m_PeerIP);
+				m_LogRec.client = m_PeerName;
+				m_pDoc->VMessage(" %s (%s)\n", m_PeerName, m_PeerIP);
 			}
 			else
 			{

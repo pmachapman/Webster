@@ -4,11 +4,11 @@
 // This is a part of the Webster HTTP Server application
 // for Microsoft Systems Journal
 //
-
+#include "stdafx.h"
+#if _MFC_VER < 0x0700
 // enable this for using the WM_IDLEUPDATECMDUI for updateing the icon
 #define	USE_IDLEUPDATECMDUI
-
-#include "stdafx.h"
+#endif
 #include "afxpriv.h"	// WM_IDLEUPDATECMDUI
 #include "Webster.h"
 
@@ -67,7 +67,11 @@ static const int	ID_ICON_ACTIVE = 2;
 
 CMainFrame::CMainFrame()
 {
+#if _MFC_VER < 0x0700
 	m_bWin95 = (GetVersion() & 0xff) >= 4;
+#else
+	m_bWin95 = TRUE;
+#endif
 	m_bHidden = m_bWin95;	// if (b_Win95) m_bHidden is TRUE	
 	m_pTray = NULL;
 }

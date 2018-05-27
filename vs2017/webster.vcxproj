@@ -49,6 +49,9 @@
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\Debug\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Midl>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -160,6 +163,7 @@
   <ItemGroup>
     <ClInclude Include="..\H\Cclient.h" />
     <ClInclude Include="..\H\Clisten.h" />
+    <ClInclude Include="..\h\Compat.h" />
     <ClInclude Include="..\H\CONFIG.H" />
     <ClInclude Include="..\H\LOGGER.H" />
     <ClInclude Include="..\H\MAINFRM.H" />

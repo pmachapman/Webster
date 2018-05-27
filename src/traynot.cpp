@@ -46,7 +46,11 @@ CTrayNot::CTrayNot(CWnd* pWnd, UINT uCallbackMessage,
 	LPCTSTR szTip, HICON* pList)
 {
 	// this is only for Windows 95 (or higher)
+#if _MFC_VER < 0x0700
 	m_bEnabled = (GetVersion() & 0xff) >= 4;
+#else
+	m_bEnabled = TRUE;
+#endif
 	if (!m_bEnabled)
 		return;
 
@@ -56,7 +60,7 @@ CTrayNot::CTrayNot(CWnd* pWnd, UINT uCallbackMessage,
 	m_tnd.uID = 0;
 	m_tnd.uFlags = NIF_MESSAGE | NIF_ICON | NIF_TIP;
 	m_tnd.uCallbackMessage = uCallbackMessage;
-	strcpy(m_tnd.szTip, szTip);
+	strcpy_s(m_tnd.szTip, _countof(m_tnd.szTip), szTip);
 
 	// save the pointer to the icon list and set the initial
 	// default icon.

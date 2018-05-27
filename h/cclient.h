@@ -30,22 +30,21 @@ public:
 	// Attributes
 public:
 	// These are used for providing the HTTP service
-	CWebDoc * m_pDoc;			// we use this quite a bit
-	BOOL				m_bDone;		// set when we're done
+	CWebDoc			*m_pDoc;		// we use this quite a bit
+	BOOL			m_bDone;		// set when we're done
 	CString			m_PeerIP;		// requestor's IP address
-	UINT				m_Port;			// port we're connected to
-	struct hostent*	m_pHE;		// for resolving client name
-	CString			m_PeerName;	// resolved client name
+	UINT			m_Port;			// port we're connected to
+	CString			m_PeerName;		// resolved client name
 	COMLOGREC		m_LogRec;		// Common Log Format log record
 
 	// These are used for servicing the request
-	char				*m_buf;			// current receive buffer
-	DWORD				m_irx;			// index into receive buffer
+	char			*m_buf;			// current receive buffer
+	DWORD			m_irx;			// index into receive buffer
 	CStringList		m_cList;		// list of request strings
-	BOOL				m_bHTTP10;		// HTTP 1.0 format?
+	BOOL			m_bHTTP10;		// HTTP 1.0 format?
 	CString			m_cURI;			// requested file name
 	CString			m_cLocalFNA;	// constructed (local) file name
-	enum METHOD_TYPE					// the HTML request methods
+	enum METHOD_TYPE				// the HTML request methods
 	{
 		METHOD_UNSUPPORTED = 0,
 		METHOD_GET,
@@ -92,20 +91,44 @@ public:
 	// misc utilities
 	BOOL ResolveClientName(BOOL bUseDNS);
 	void SendCannedMsg(int idErr, ...);
-	inline struct hostent* GetHostByAddr(LPCSTR lpszIP)
+	inline CString GetHostByAddr(LPCSTR lpszIP)
 	{
-		// translate dotted string format into integer
-		int uPeer[4];
-		sscanf(lpszIP, "%d.%d.%d.%d",
-			&uPeer[0], &uPeer[1], &uPeer[2], &uPeer[3]);
+#ifdef _WINSOCK2API_
+		struct sockaddr_in saGNI;
+		char hostname[NI_MAXHOST];
+		char servInfo[NI_MAXSERV];
+		u_short port = 27015;
+		saGNI.sin_family = AF_INET;
+		InetPton(AF_INET, lpszIP, &saGNI.sin_addr.s_addr);
+		saGNI.sin_port = htons(port);
 
-		// move it into a char array for ::gethostbyaddr()
-		char cPeer[4];
-		cPeer[0] = uPeer[0];
-		cPeer[1] = uPeer[1];
-		cPeer[2] = uPeer[2];
-		cPeer[3] = uPeer[3];
-		return (::gethostbyaddr(cPeer, 4, PF_INET));
+		getnameinfo((struct sockaddr *) &saGNI,
+			sizeof(struct sockaddr),
+			hostname,
+			NI_MAXHOST, servInfo, NI_MAXSERV, NI_NUMERICSERV);
+		return hostname;
+#else
+			// translate dotted string format into integer
+			struct hostent* host;
+			int uPeer[4];
+			sscanf_s(lpszIP, "%d.%d.%d.%d",
+				&uPeer[0], &uPeer[1], &uPeer[2], &uPeer[3]);
+
+			// move it into a char array for ::gethostbyaddr()
+			char cPeer[4];
+			cPeer[0] = uPeer[0];
+			cPeer[1] = uPeer[1];
+			cPeer[2] = uPeer[2];
+			cPeer[3] = uPeer[3];
+		if (host = ::gethostbyaddr(cPeer, 4, PF_INET))
+		{
+			return host->h_name;
+		}
+		else
+		{
+			return lpszIP;
+		}
+#endif
 	}
 
 
