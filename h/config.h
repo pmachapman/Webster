@@ -15,13 +15,13 @@ class CServer : public CPropertyPage
 {
 	DECLARE_DYNCREATE(CServer)
 
-// Construction
+	// Construction
 public:
 	CServer();
 	~CServer();
 
-// Dialog Data
-	//{{AFX_DATA(CServer)
+	// Dialog Data
+		//{{AFX_DATA(CServer)
 	enum { IDD = IDD_SERVER };
 	UINT	m_nPort;
 	UINT	m_nMaxConnects;
@@ -32,7 +32,7 @@ public:
 // Overrides
 	// ClassWizard generate virtual function overrides
 	//{{AFX_VIRTUAL(CServer)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 
@@ -54,13 +54,13 @@ class CHTML : public CPropertyPage
 {
 	DECLARE_DYNCREATE(CHTML)
 
-// Construction
+	// Construction
 public:
 	CHTML();
 	~CHTML();
 
-// Dialog Data
-	//{{AFX_DATA(CHTML)
+	// Dialog Data
+		//{{AFX_DATA(CHTML)
 	enum { IDD = IDD_HTML };
 	CString	m_DefaultName;
 	CString	m_DefaultPath;
@@ -71,7 +71,7 @@ public:
 // Overrides
 	// ClassWizard generate virtual function overrides
 	//{{AFX_VIRTUAL(CHTML)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 
@@ -93,13 +93,13 @@ class CLogging : public CPropertyPage
 {
 	DECLARE_DYNCREATE(CLogging)
 
-// Construction
+	// Construction
 public:
 	CLogging();
 	~CLogging();
 
-// Dialog Data
-	//{{AFX_DATA(CLogging)
+	// Dialog Data
+		//{{AFX_DATA(CLogging)
 	enum { IDD = IDD_LOGGING };
 	BOOL	m_bLogEnable;
 	CString	m_LogPath;
@@ -108,7 +108,7 @@ public:
 // Overrides
 	// ClassWizard generate virtual function overrides
 	//{{AFX_VIRTUAL(CLogging)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 
@@ -130,13 +130,13 @@ class CStatus : public CPropertyPage
 {
 	DECLARE_DYNCREATE(CStatus)
 
-// Construction
+	// Construction
 public:
 	CStatus();
 	~CStatus();
 
-// Dialog Data
-	//{{AFX_DATA(CStatus)
+	// Dialog Data
+		//{{AFX_DATA(CStatus)
 	enum { IDD = IDD_STATUS };
 	BOOL	m_bStatusEnable;
 	BOOL	m_bDebugEnable;
@@ -147,7 +147,7 @@ public:
 // Overrides
 	// ClassWizard generate virtual function overrides
 	//{{AFX_VIRTUAL(CStatus)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 
@@ -169,26 +169,26 @@ class CAlert : public CPropertyPage
 {
 	DECLARE_DYNCREATE(CAlert)
 
-// Construction
+	// Construction
 public:
 	CAlert();
 	~CAlert();
 
-// Dialog Data
-	//{{AFX_DATA(CAlert)
+	// Dialog Data
+		//{{AFX_DATA(CAlert)
 	enum { IDD = IDD_ALERT };
 	BOOL	m_bEnableSound;
 	BOOL	m_bEnableIcon;
 	//}}AFX_DATA
 
 // User defined data
-	HICON	m_hIdle ;
-	HICON	m_hActive ;
+	HICON	m_hIdle;
+	HICON	m_hActive;
 
-// Overrides
-	// ClassWizard generate virtual function overrides
-	//{{AFX_VIRTUAL(CAlert)
-	protected:
+	// Overrides
+		// ClassWizard generate virtual function overrides
+		//{{AFX_VIRTUAL(CAlert)
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

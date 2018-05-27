@@ -10,7 +10,7 @@
 
 class CSplash : public CDialog
 {
-// Construction
+	// Construction
 public:
 	CSplash(CWnd* pParent = NULL);   // standard constructor
 
@@ -24,7 +24,7 @@ public:
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CSplash)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

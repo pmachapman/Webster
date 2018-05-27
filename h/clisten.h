@@ -25,15 +25,15 @@ private:
 public:
 	CListen(CWebDoc* pDoc);
 
-// Attributes
+	// Attributes
 public:
-	CWebDoc* m_pDoc;
+	CWebDoc * m_pDoc;
 
-// Overridable callbacks
+	// Overridable callbacks
 protected:
 	virtual void OnAccept(int nErrorCode);
 
-// Implementation
+	// Implementation
 public:
 	virtual ~CListen();
 

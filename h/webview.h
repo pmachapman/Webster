@@ -11,20 +11,20 @@ protected: // create from serialization only
 	CWebView();
 	DECLARE_DYNCREATE(CWebView)
 
-// Attributes
+	// Attributes
 public:
-	CWebDoc* GetDocument();
+	CWebDoc * GetDocument();
 
-// Operations
+	// Operations
 public:
 
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CWebView)
-	public:
+	// Overrides
+		// ClassWizard generated virtual function overrides
+		//{{AFX_VIRTUAL(CWebView)
+public:
 	virtual void OnDraw(CDC* pDC);  // overridden to draw this view
-	protected:
+protected:
 	virtual void OnInitialUpdate(); // called first time after construct
 	//}}AFX_VIRTUAL
 
@@ -38,7 +38,7 @@ public:
 
 protected:
 
-// Generated message map functions
+	// Generated message map functions
 protected:
 	//{{AFX_MSG(CWebView)
 	//}}AFX_MSG
@@ -47,7 +47,9 @@ protected:
 
 #ifndef _DEBUG  // debug version in WebView.cpp
 inline CWebDoc* CWebView::GetDocument()
-   { return (CWebDoc*)m_pDocument; }
+{
+	return (CWebDoc*)m_pDocument;
+}
 #endif
 
 /////////////////////////////////////////////////////////////////////////////

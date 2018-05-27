@@ -7,7 +7,7 @@
 // This is a part of the Webster HTTP Server application
 // for Microsoft Systems Journal
 //
- 
+
 #ifndef __PROPS_H__
 #define __PROPS_H__
 
@@ -20,11 +20,11 @@ class CWebProps : public CPropertySheet
 {
 	DECLARE_DYNAMIC(CWebProps)
 
-// Construction
+	// Construction
 public:
 	CWebProps(CWnd* pParentWnd = NULL);
 
-// Attributes
+	// Attributes
 public:
 	CServer		m_Page1;
 	CHTML		m_Page2;
@@ -32,21 +32,21 @@ public:
 	CStatus		m_Page4;
 	CAlert		m_Page5;
 
-// Operations
+	// Operations
 public:
-	void GetProps ( void ) ;
-	void SetProps ( void ) ;
+	void GetProps(void);
+	void SetProps(void);
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CWebProps)
-	//}}AFX_VIRTUAL
+	// Overrides
+		// ClassWizard generated virtual function overrides
+		//{{AFX_VIRTUAL(CWebProps)
+		//}}AFX_VIRTUAL
 
-// Implementation
+	// Implementation
 public:
 	virtual ~CWebProps();
 
-// Generated message map functions
+	// Generated message map functions
 protected:
 	//{{AFX_MSG(CWebProps)
 		// NOTE - the ClassWizard will add and remove member functions here.

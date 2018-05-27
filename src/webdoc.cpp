@@ -41,9 +41,9 @@ END_MESSAGE_MAP()
 
 CWebDoc::CWebDoc()
 {
-	m_nLines = 0 ;
-	m_nMaxLines = 100 ;
-	m_strInfo.Empty() ;	// make sure we start off clean
+	m_nLines = 0;
+	m_nMaxLines = 100;
+	m_strInfo.Empty();	// make sure we start off clean
 }
 
 CWebDoc::~CWebDoc()
@@ -55,54 +55,54 @@ BOOL CWebDoc::OnNewDocument()
 	if (!CDocument::OnNewDocument())
 		return FALSE;
 
-	CString msg ;	// we use this a lot for MessageBox() messages
-	GetFocus() ;	// For MessageBox() - frame window not init'ed yet
+	CString msg;	// we use this a lot for MessageBox() messages
+	GetFocus();	// For MessageBox() - frame window not init'ed yet
 
 	// open log file
-	OpenLogfile() ;
+	OpenLogfile();
 
 	// Create our one and only listener socket.
 	// OnCloseDocument() takes care of deleting m_pSocket.
-	m_pSocket = new CListen ( this ) ;
-	if ( ! m_pSocket )
+	m_pSocket = new CListen(this);
+	if (!m_pSocket)
 	{
-		AfxMessageBox ( "Unable to allocate memory for listener socket!" ) ;
-		return ( FALSE ) ;
+		AfxMessageBox("Unable to allocate memory for listener socket!");
+		return (FALSE);
 	}
 
-	if ( ! m_pSocket->Create ( theApp.m_wwwPort ) )
+	if (!m_pSocket->Create(theApp.m_wwwPort))
 	{
-		DWORD dwErr = m_pSocket->GetLastError() ;
-		switch ( dwErr )
+		DWORD dwErr = m_pSocket->GetLastError();
+		switch (dwErr)
 		{
-			case WSAEADDRINUSE:	// example of expected error handler
-				AfxMessageBox ( "The WWW port is already in use!" ) ;
-				break ;
+		case WSAEADDRINUSE:	// example of expected error handler
+			AfxMessageBox("The WWW port is already in use!");
+			break;
 
-			default:					// example of generic error handler
-				msg.Format ( "Listener socket Create failed: %s\n",
-							  theApp.MapErrMsg(dwErr) ) ;
-				AfxMessageBox ( msg ) ;
+		default:					// example of generic error handler
+			msg.Format("Listener socket Create failed: %s\n",
+				theApp.MapErrMsg(dwErr));
+			AfxMessageBox(msg);
 		}
-		return ( FALSE ) ;
+		return (FALSE);
 	}
 
 	// start listening for requests and set running state
-	BOOL ret = m_pSocket->Listen() ;
-	if ( ret )
+	BOOL ret = m_pSocket->Listen();
+	if (ret)
 	{
-		theApp.m_State = CWebApp::ST_WAITING ;
-		msg.Format ( "Port: %d", theApp.m_wwwPort ) ;
-		SetTitle ( msg ) ;
+		theApp.m_State = CWebApp::ST_WAITING;
+		msg.Format("Port: %d", theApp.m_wwwPort);
+		SetTitle(msg);
 	}
 	else
 	{
-		DWORD dwErr = m_pSocket->GetLastError() ;
-		msg.Format ( "Listener socket Listen failed: %s\n",
-					 theApp.MapErrMsg(dwErr) ) ;
-		AfxMessageBox ( msg ) ;
+		DWORD dwErr = m_pSocket->GetLastError();
+		msg.Format("Listener socket Listen failed: %s\n",
+			theApp.MapErrMsg(dwErr));
+		AfxMessageBox(msg);
 	}
-	return ( ret ) ;
+	return (ret);
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -144,49 +144,49 @@ void CWebDoc::OnAccept()
 	// hasn't fully run down yet.
 	// This is a feature of MFC prior to 4.0 and is no longer necessary
 	// in subsequent versions.
-	MSG msg ;
-	while ( ::PeekMessage ( &msg, NULL,
-							WM_SOCKET_NOTIFY, WM_SOCKET_DEAD,
-							PM_REMOVE )	)
+	MSG msg;
+	while (::PeekMessage(&msg, NULL,
+		WM_SOCKET_NOTIFY, WM_SOCKET_DEAD,
+		PM_REMOVE))
 	{
-		::DispatchMessage ( &msg ) ;
+		::DispatchMessage(&msg);
 	}
 #endif
-	time_t tNow ;	// add time tag for MikeAh
-	time( &tNow ) ;
-	CTime cNow ( tNow ) ;
-	Message ( cNow.Format ( "%m/%d/%y %H:%M:%S" ) ) ;
-	Message ( " - Connection request:" ) ;
+	time_t tNow;	// add time tag for MikeAh
+	time(&tNow);
+	CTime cNow(tNow);
+	Message(cNow.Format("%m/%d/%y %H:%M:%S"));
+	Message(" - Connection request:");
 
 	// create a client object
-	CClient *pClient = new CClient ( this ) ;
-	if ( pClient == NULL )
+	CClient *pClient = new CClient(this);
+	if (pClient == NULL)
 	{
-		Message ( ">> Unable to create client socket! <<\n" ) ;
-		return ;
+		Message(">> Unable to create client socket! <<\n");
+		return;
 	}
 
-	if ( ! m_pSocket->Accept ( *pClient ) )
+	if (!m_pSocket->Accept(*pClient))
 	{
-		Message ( ">> Unable to accept client connecton! <<\n" ) ;
-		delete pClient ;
-		return ;
+		Message(">> Unable to accept client connecton! <<\n");
+		delete pClient;
+		return;
 	}
-	pClient->ResolveClientName ( theApp.m_bResolveClientname ) ;
+	pClient->ResolveClientName(theApp.m_bResolveClientname);
 
 	// have we hit our resource limit?
-	if ( m_listConnects.GetCount() >= (int)theApp.m_nMaxConnects )
+	if (m_listConnects.GetCount() >= (int)theApp.m_nMaxConnects)
 	{
 		// yes, send failure msg to client
-		pClient->SendCannedMsg ( 503 ) ;
-		delete pClient ;
-		Message ( "  Connection rejected - MaxConnects\n" ) ;
-		return ;
+		pClient->SendCannedMsg(503);
+		delete pClient;
+		Message("  Connection rejected - MaxConnects\n");
+		return;
 	}
-	Message ( "  Connection accepted!!!\n" ) ;
+	Message("  Connection accepted!!!\n");
 
 	// add this client to our list
-	m_listConnects.AddTail ( pClient ) ;
+	m_listConnects.AddTail(pClient);
 
 	// Service Agent has the 'tater now...
 
@@ -198,67 +198,67 @@ void CWebDoc::OnAccept()
 void CWebDoc::CheckIdleConnects()
 {
 	// compute the age threshold
-	time_t tNow ;
-	time( &tNow ) ;
-	CTime cNow ( tNow ) ;
-	CTimeSpan cTimeOut ( 0, 0, 0, theApp.m_nTimeOut ) ;
-	cNow -= cTimeOut ;	// anyone created before this time will get zapped
+	time_t tNow;
+	time(&tNow);
+	CTime cNow(tNow);
+	CTimeSpan cTimeOut(0, 0, 0, theApp.m_nTimeOut);
+	cNow -= cTimeOut;	// anyone created before this time will get zapped
 
-	DbgMessage ( "--- Checking for idle connections ---\n" ) ;
-	for ( POSITION pos = m_listConnects.GetHeadPosition() ; pos != NULL ; )
+	DbgMessage("--- Checking for idle connections ---\n");
+	for (POSITION pos = m_listConnects.GetHeadPosition(); pos != NULL; )
 	{
-		CClient* pClient = (CClient*)m_listConnects.GetNext ( pos ) ;
+		CClient* pClient = (CClient*)m_listConnects.GetNext(pos);
 		// anyone lanquishing in the list?
-		if ( pClient->m_bDone )
+		if (pClient->m_bDone)
 		{
-			KillSocket ( pClient ) ;
+			KillSocket(pClient);
 		}
 		// anyone timed out?
-		else if ( pClient->m_LogRec.datetime < cNow )
+		else if (pClient->m_LogRec.datetime < cNow)
 		{
-			char msg[80] ;
-			wsprintf ( msg, ">>> Idle timeout on client: %s\n", pClient->m_PeerIP ) ;
-			Message ( msg ) ;
-			KillSocket ( pClient ) ;
+			char msg[80];
+			wsprintf(msg, ">>> Idle timeout on client: %s\n", pClient->m_PeerIP);
+			Message(msg);
+			KillSocket(pClient);
 		}
 	}
 	// flush the log file buffer, while we're at it
-	if ( theApp.m_bLogEnable && m_fileLog.is_open() )
-		m_fileLog.flush() ;
+	if (theApp.m_bLogEnable && m_fileLog.is_open())
+		m_fileLog.flush();
 }	// CheckIdleConnects()
 
 // This routine is called from the MainFrame when a client has notified the
 // aforementioned that it is done. Since the document owns the client
 // objects, the document is responsible for cleaning up after it.
-void CWebDoc::KillSocket ( CClient* pSocket )
+void CWebDoc::KillSocket(CClient* pSocket)
 {
-	BOOL bFoundIt = FALSE ;
+	BOOL bFoundIt = FALSE;
 	// remove this client from the connection list
-	for ( POSITION pos = m_listConnects.GetHeadPosition() ; pos != NULL ; )
+	for (POSITION pos = m_listConnects.GetHeadPosition(); pos != NULL; )
 	{
-		POSITION temp = pos ;
-		CClient* pSock = (CClient*)m_listConnects.GetNext ( pos ) ;
-		if ( pSock == pSocket )
+		POSITION temp = pos;
+		CClient* pSock = (CClient*)m_listConnects.GetNext(pos);
+		if (pSock == pSocket)
 		{
-			bFoundIt = TRUE ;
-			m_listConnects.RemoveAt ( temp ) ;
-//(dec)...debug...
-// looking for cause of accvio when client cancels transfer
-// AsyncSelect causes accvio after Send has failed
-			if ( pSocket->AsyncSelect(0) == 0 )
-				DWORD err = GetLastError() ;
-			pSocket->Close() ;	//...debug...
+			bFoundIt = TRUE;
+			m_listConnects.RemoveAt(temp);
+			//(dec)...debug...
+			// looking for cause of accvio when client cancels transfer
+			// AsyncSelect causes accvio after Send has failed
+			if (pSocket->AsyncSelect(0) == 0)
+				DWORD err = GetLastError();
+			pSocket->Close();	//...debug...
 //(dec)...end of debug...
-			delete pSocket ;	// destructor calls Close()
-			pSocket = NULL ;	// make sure its no longer accessible
-			Message ( "  Connection closed.\n" ) ;
-			break ;
+			delete pSocket;	// destructor calls Close()
+			pSocket = NULL;	// make sure its no longer accessible
+			Message("  Connection closed.\n");
+			break;
 		}
 	}
-	if ( ! bFoundIt )
+	if (!bFoundIt)
 	{
-		DbgMessage ( ">> Uh oh! - Might have a sync problem.\n" ) ;
-		DbgMessage ( ">> Couldn't find delete-pending socket in client list.\n" ) ;
+		DbgMessage(">> Uh oh! - Might have a sync problem.\n");
+		DbgMessage(">> Couldn't find delete-pending socket in client list.\n");
 	}
 }	// KillSocket()
 
@@ -268,42 +268,42 @@ void CWebDoc::KillSocket ( CClient* pSocket )
 void CWebDoc::OpenLogfile()
 {
 	// we may have just turned logging off, so check this before m_bLogEnable
-	if ( m_fileLog.is_open() )
-		m_fileLog.close() ;
-	if ( ! theApp.m_bLogEnable )
-		return ;
+	if (m_fileLog.is_open())
+		m_fileLog.close();
+	if (!theApp.m_bLogEnable)
+		return;
 
 	// now try to open/create the file
 #if _MFC_VER >= 0x0700 || __BORLANDC__
-	m_fileLog.open ( theApp.m_LogPath,
-		std::ios::ate) ;
+	m_fileLog.open(theApp.m_LogPath,
+		std::ios::ate);
 #else
-	m_fileLog.open ( theApp.m_LogPath,
+	m_fileLog.open(theApp.m_LogPath,
 		ios::ate,
-		filebuf::sh_read ) ;
+		filebuf::sh_read);
 #endif;
 }
 
-void CWebDoc::WriteLog ( COMLOGREC& LogRec )
+void CWebDoc::WriteLog(COMLOGREC& LogRec)
 {
-	if ( theApp.m_bLogEnable && m_fileLog.is_open() )
+	if (theApp.m_bLogEnable && m_fileLog.is_open())
 	{
 #if _MFC_VER < 0x0700
 		m_fileLog << LogRec.client << " "
-					 << LogRec.inetd << " "
-					 << LogRec.username << " ["
-					 << LogRec.datetime.Format("%d/%b/%Y %H:%M:%S") << "] \""
-					 << LogRec.request << "\" "
-					 << LogRec.status << " "
-					 << LogRec.bytes << "\n" ;
+			<< LogRec.inetd << " "
+			<< LogRec.username << " ["
+			<< LogRec.datetime.Format("%d/%b/%Y %H:%M:%S") << "] \""
+			<< LogRec.request << "\" "
+			<< LogRec.status << " "
+			<< LogRec.bytes << "\n";
 #else
 		m_fileLog << (LPCTSTR)LogRec.client << " "
-					 << (LPCTSTR)LogRec.inetd << " "
-					 << (LPCTSTR)LogRec.username << " ["
-					 << (LPCTSTR)LogRec.datetime.Format("%d/%b/%Y %H:%M:%S") << "] \""
-					 << (LPCTSTR)LogRec.request << "\" "
-					 << LogRec.status << " "
-					 << LogRec.bytes << "\n" ;
+			<< (LPCTSTR)LogRec.inetd << " "
+			<< (LPCTSTR)LogRec.username << " ["
+			<< (LPCTSTR)LogRec.datetime.Format("%d/%b/%Y %H:%M:%S") << "] \""
+			<< (LPCTSTR)LogRec.request << "\" "
+			<< LogRec.status << " "
+			<< LogRec.bytes << "\n";
 #endif
 	}
 }
@@ -312,83 +312,83 @@ void CWebDoc::WriteLog ( COMLOGREC& LogRec )
 /////////////////////////////////////////////////////////////////////////////
 // Status message handlers
 
-void CWebDoc::Message ( LPCTSTR lpszMessage )
+void CWebDoc::Message(LPCTSTR lpszMessage)
 {
-	if ( ! theApp.m_bShowStatus )
-		return ;
-	Message ( CString(lpszMessage) ) ;
+	if (!theApp.m_bShowStatus)
+		return;
+	Message(CString(lpszMessage));
 }
 
-void CWebDoc::Message ( CString cStr )
+void CWebDoc::Message(CString cStr)
 {
-	if ( ! theApp.m_bShowStatus )
-		return ;
-	if ( cStr.GetLength() == 0 )
-		return ;
-	m_strInfo += cStr ;
+	if (!theApp.m_bShowStatus)
+		return;
+	if (cStr.GetLength() == 0)
+		return;
+	m_strInfo += cStr;
 	// This chunk of code unpacks the message string into individual lines.
 	// The View window code is much simpler this way.
-	BOOL bUpdate = FALSE ;
-	int newline ;
-	while ( ( newline = m_strInfo.Find ( "\n" ) ) >= 0 )
+	BOOL bUpdate = FALSE;
+	int newline;
+	while ((newline = m_strInfo.Find("\n")) >= 0)
 	{
-		CString cTemp = m_strInfo.Left ( newline ) ;
-		m_strInfo = m_strInfo.Right ( (m_strInfo.GetLength()-newline) - 1 ) ;
+		CString cTemp = m_strInfo.Left(newline);
+		m_strInfo = m_strInfo.Right((m_strInfo.GetLength() - newline) - 1);
 
 		// purge excess messages
-		while ( m_strList.GetCount() >= m_nMaxLines )
-			m_strList.RemoveHead() ;
+		while (m_strList.GetCount() >= m_nMaxLines)
+			m_strList.RemoveHead();
 
-		m_strList.AddTail ( cTemp ) ;
-		bUpdate = TRUE ;
+		m_strList.AddTail(cTemp);
+		bUpdate = TRUE;
 	}
-	if ( bUpdate )	// update views if any lines were added
-		UpdateAllViews ( NULL ) ;
+	if (bUpdate)	// update views if any lines were added
+		UpdateAllViews(NULL);
 }
 
-void CWebDoc::DbgMessage ( LPCTSTR lpszMessage )
+void CWebDoc::DbgMessage(LPCTSTR lpszMessage)
 {
-	if ( theApp.m_bDebugOutput )
-		Message ( lpszMessage ) ;
+	if (theApp.m_bDebugOutput)
+		Message(lpszMessage);
 }
 
-void CWebDoc::DbgMessage ( CString cStr )
+void CWebDoc::DbgMessage(CString cStr)
 {
-	if ( theApp.m_bDebugOutput )
-		Message ( cStr ) ;
+	if (theApp.m_bDebugOutput)
+		Message(cStr);
 }
 
 // We could use the var_arg form of these functions exclusively,
 // but it's a little more efficient to only use these when we
 // really need them.
 
-void CWebDoc::VMessage ( LPCTSTR lpszFormat, ... )
+void CWebDoc::VMessage(LPCTSTR lpszFormat, ...)
 {
-	va_list	ptr ;
-	char	buf[200] ;
+	va_list	ptr;
+	char	buf[200];
 
-	va_start ( ptr, lpszFormat ) ;
-	wvsprintf ( buf, lpszFormat, ptr ) ; 
-	Message ( buf ) ;
+	va_start(ptr, lpszFormat);
+	wvsprintf(buf, lpszFormat, ptr);
+	Message(buf);
 }
 
-void CWebDoc::DbgVMessage ( LPCTSTR lpszFormat, ... )
+void CWebDoc::DbgVMessage(LPCTSTR lpszFormat, ...)
 {
-	va_list	ptr ;
-	char	buf[200] ;
+	va_list	ptr;
+	char	buf[200];
 
-	va_start ( ptr, lpszFormat ) ;
-	wvsprintf ( buf, lpszFormat, ptr ) ; 
-	DbgMessage ( buf ) ;
+	va_start(ptr, lpszFormat);
+	wvsprintf(buf, lpszFormat, ptr);
+	DbgMessage(buf);
 }
 
 
 /////////////////////////////////////////////////////////////////////////////
 // Class-Private handlers
-void CWebDoc::SetTitle(LPCTSTR lpszTitle) 
+void CWebDoc::SetTitle(LPCTSTR lpszTitle)
 {
-	CString cTitle ;
-	cTitle.Format ( "Listening on port: %d", theApp.m_wwwPort ) ;
+	CString cTitle;
+	cTitle.Format("Listening on port: %d", theApp.m_wwwPort);
 	CDocument::SetTitle(cTitle);
 }
 
@@ -402,27 +402,27 @@ void CWebDoc::SetTitle(LPCTSTR lpszTitle)
 /////////////////////////////////////////////////////////////////////////////
 // CWebDoc commands
 
-void CWebDoc::OnCloseDocument() 
+void CWebDoc::OnCloseDocument()
 {
 	// clobber everyone still connected
-	for ( POSITION pos = m_listConnects.GetHeadPosition() ; pos != NULL ; )
+	for (POSITION pos = m_listConnects.GetHeadPosition(); pos != NULL; )
 	{
-		CClient* pClient = (CClient*)m_listConnects.GetNext ( pos ) ;
-		KillSocket ( pClient ) ;
+		CClient* pClient = (CClient*)m_listConnects.GetNext(pos);
+		KillSocket(pClient);
 	}
 
-	delete m_pSocket ;	// release the listening socket
+	delete m_pSocket;	// release the listening socket
 
 	// tidy up the log file
-	if ( theApp.m_bLogEnable && m_fileLog.is_open() )
-		m_fileLog.close() ;
+	if (theApp.m_bLogEnable && m_fileLog.is_open())
+		m_fileLog.close();
 
 	CDocument::OnCloseDocument();
 }
 
-void CWebDoc::OnClearView() 
+void CWebDoc::OnClearView()
 {
-	m_strList.RemoveAll() ;
-	UpdateAllViews ( NULL, 0L, 0 ) ;
+	m_strList.RemoveAll();
+	UpdateAllViews(NULL, 0L, 0);
 }
 

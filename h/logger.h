@@ -17,13 +17,13 @@
 // Common Log Format record definition
 typedef struct
 {
-	CString		client ;
-	CString		inetd ;
-	CString		username ;
-	CTime		datetime ;
-	CString		request ;
-	long		status ;
-	long		bytes ;
-} COMLOGREC, *PCOMLOGREC ;
+	CString		client;
+	CString		inetd;
+	CString		username;
+	CTime		datetime;
+	CString		request;
+	long		status;
+	long		bytes;
+} COMLOGREC, *PCOMLOGREC;
 
 #endif // __LOGGER_H__

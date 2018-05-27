@@ -57,9 +57,9 @@ static UINT indicators[] =
 };
 
 // identifiers for tray icons
-static const int	ID_ICON_MAIN	= 0 ;
-static const int	ID_ICON_IDLE	= 1 ;
-static const int	ID_ICON_ACTIVE	= 2 ;
+static const int	ID_ICON_MAIN = 0;
+static const int	ID_ICON_IDLE = 1;
+static const int	ID_ICON_ACTIVE = 2;
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -67,9 +67,9 @@ static const int	ID_ICON_ACTIVE	= 2 ;
 
 CMainFrame::CMainFrame()
 {
-	m_bWin95 = ( GetVersion() & 0xff ) >= 4 ;
-	m_bHidden = m_bWin95 ;	// if (b_Win95) m_bHidden is TRUE	
-	m_pTray = NULL ;
+	m_bWin95 = (GetVersion() & 0xff) >= 4;
+	m_bHidden = m_bWin95;	// if (b_Win95) m_bHidden is TRUE	
+	m_pTray = NULL;
 }
 
 CMainFrame::~CMainFrame()
@@ -89,7 +89,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	if (!m_wndStatusBar.Create(this) ||
 		!m_wndStatusBar.SetIndicators(indicators,
-		  sizeof(indicators)/sizeof(UINT)))
+			sizeof(indicators) / sizeof(UINT)))
 	{
 		TRACE0("Failed to create status bar\n");
 		return -1;      // fail to create
@@ -101,24 +101,24 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	DockControlBar(&m_wndToolBar);
 
 	// load icon onto taskbar tray
-	m_pTray = new CTrayNot ( this, WM_MY_NOTIFY,
-									 "Webster", theApp.m_pIconList ) ;
-	m_pTray->SetState ( ID_ICON_IDLE ) ;
+	m_pTray = new CTrayNot(this, WM_MY_NOTIFY,
+		"Webster", theApp.m_pIconList);
+	m_pTray->SetState(ID_ICON_IDLE);
 
 	// create a sanity timer
-	m_nSanityTime = theApp.m_nSanityTime ;
-	SetTimer ( IDT_SANITY_TIME, m_nSanityTime*1000, NULL ) ;
+	m_nSanityTime = theApp.m_nSanityTime;
+	SetTimer(IDT_SANITY_TIME, m_nSanityTime * 1000, NULL);
 	return 0;
 }
 
 // create the view's splitter window
-BOOL CMainFrame::OnCreateClient( LPCREATESTRUCT /*lpcs*/,
+BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/,
 	CCreateContext* pContext)
 {
-	return m_wndSplitter.Create ( this,
-											2, 1,		// allow 2 horizontal panes
-											CSize( 10, 10 ),
-											pContext ) ;
+	return m_wndSplitter.Create(this,
+		2, 1,		// allow 2 horizontal panes
+		CSize(10, 10),
+		pContext);
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -140,12 +140,12 @@ void CMainFrame::Dump(CDumpContext& dc) const
 /////////////////////////////////////////////////////////////////////////////
 // Helper for handling Windows 95 taskbar tray icon status indicator
 
-void CMainFrame::NotifyHandler ( BOOL bShowActive )
+void CMainFrame::NotifyHandler(BOOL bShowActive)
 {
-	if ( theApp.m_bEnableIcon )
-		m_pTray->SetState ( bShowActive ? ID_ICON_ACTIVE : ID_ICON_IDLE ) ;
+	if (theApp.m_bEnableIcon)
+		m_pTray->SetState(bShowActive ? ID_ICON_ACTIVE : ID_ICON_IDLE);
 	else
-		m_pTray->SetState ( ID_ICON_MAIN ) ;
+		m_pTray->SetState(ID_ICON_MAIN);
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -154,11 +154,11 @@ void CMainFrame::NotifyHandler ( BOOL bShowActive )
 // This is the handler for the Properties dialog box
 void CMainFrame::OnProperties()
 {
-	CWebProps dlgProps ;
+	CWebProps dlgProps;
 
-	dlgProps.GetProps() ;
-	if ( dlgProps.DoModal() == IDOK )
-		dlgProps.SetProps() ;
+	dlgProps.GetProps();
+	if (dlgProps.DoModal() == IDOK)
+		dlgProps.SetProps();
 }
 
 // This is the handler for the Open item on the tray icon's popup menu
@@ -167,31 +167,31 @@ void CMainFrame::OnProperties()
 //    because we may have minimized, as well as hidden, our window.
 void CMainFrame::OnUnHide()
 {
-	ShowWindow ( SW_RESTORE ) ;
-	m_bHidden = FALSE ;
+	ShowWindow(SW_RESTORE);
+	m_bHidden = FALSE;
 }
 
 // This is the WM_TIMER message handler for the periodic sanity check.
-void CMainFrame::OnTimer(UINT nIDEvent) 
+void CMainFrame::OnTimer(UINT nIDEvent)
 {
-	if ( theApp.m_State == CWebApp::ST_NULL )
-		return ;	// not running yet!
+	if (theApp.m_State == CWebApp::ST_NULL)
+		return;	// not running yet!
 
-	if ( nIDEvent == IDT_SANITY_TIME )	// periodic sanity check
+	if (nIDEvent == IDT_SANITY_TIME)	// periodic sanity check
 	{
 		// If the timer setting has changed,
 		// then reset the timer with the new value
-		if ( m_nSanityTime != theApp.m_nSanityTime )
+		if (m_nSanityTime != theApp.m_nSanityTime)
 		{
-			m_nSanityTime = theApp.m_nSanityTime ;
-			KillTimer ( IDT_SANITY_TIME ) ;
-			SetTimer( IDT_SANITY_TIME, m_nSanityTime*1000, NULL ) ;
+			m_nSanityTime = theApp.m_nSanityTime;
+			KillTimer(IDT_SANITY_TIME);
+			SetTimer(IDT_SANITY_TIME, m_nSanityTime * 1000, NULL);
 		}
 		// Have the document check for aged connections
-		CWebDoc* pDoc = (CWebDoc*)GetActiveDocument() ;                 
-		pDoc->CheckIdleConnects() ;
+		CWebDoc* pDoc = (CWebDoc*)GetActiveDocument();
+		pDoc->CheckIdleConnects();
 		// As long as we're at it, update the tray icon
-		NotifyHandler ( pDoc->ActiveClients() ) ;
+		NotifyHandler(pDoc->ActiveClients());
 	}
 	CFrameWnd::OnTimer(nIDEvent);
 }
@@ -202,107 +202,107 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 // the document can't deal with WM_ messages, we have to initiate the
 // action from the main frame.
 // We also update the icon while we're at it.
-LONG CMainFrame::OnKillSocket ( WPARAM wParam, LPARAM lParam ) 
+LONG CMainFrame::OnKillSocket(WPARAM wParam, LPARAM lParam)
 {
-	CWebDoc* pDoc = (CWebDoc*)GetActiveDocument() ;
-	pDoc->DbgMessage ( "   MainFrame::OnMsgKillSocket() ->" ) ;
-	pDoc->KillSocket ( (CClient*)lParam ) ;
-	NotifyHandler ( pDoc->ActiveClients() ) ;	// update the tray icon
-	return ( 0 ) ;
+	CWebDoc* pDoc = (CWebDoc*)GetActiveDocument();
+	pDoc->DbgMessage("   MainFrame::OnMsgKillSocket() ->");
+	pDoc->KillSocket((CClient*)lParam);
+	NotifyHandler(pDoc->ActiveClients());	// update the tray icon
+	return (0);
 }
 
 // This handler is executed when the document creates a new client object.
 // Its only purpose is to set the notification mechanisms to indicate a
 // new client connection.
-LONG CMainFrame::OnNewClient ( WPARAM wParam, LPARAM lParam ) 
+LONG CMainFrame::OnNewClient(WPARAM wParam, LPARAM lParam)
 {
-	NotifyHandler ( TRUE ) ;	// update the tray icon
-	if ( theApp.m_bEnableSound )	// do the audible notification
+	NotifyHandler(TRUE);	// update the tray icon
+	if (theApp.m_bEnableSound)	// do the audible notification
 	{
 		// if we don't support sound, use the system beeper
-		if ( ! ::PlaySound ( "SystemDefault", NULL, SND_ALIAS | SND_ASYNC ) )
-			MessageBeep ( 0xffffffff ) ;
+		if (!::PlaySound("SystemDefault", NULL, SND_ALIAS | SND_ASYNC))
+			MessageBeep(0xffffffff);
 	}
-	return ( 0 ) ;
+	return (0);
 }
 
 // This handler is executed when a new log file is needed. Usually only
 // triggered when the log file name is changed in the configuration
 // properties dialog.
-LONG CMainFrame::OnNewLogfile ( WPARAM wParam, LPARAM lParam ) 
+LONG CMainFrame::OnNewLogfile(WPARAM wParam, LPARAM lParam)
 {
-	CWebDoc* pDoc = (CWebDoc*)GetActiveDocument() ;                 
-	pDoc->OpenLogfile() ;
-	return ( 0 ) ;
+	CWebDoc* pDoc = (CWebDoc*)GetActiveDocument();
+	pDoc->OpenLogfile();
+	return (0);
 }
 
 // This is the system tray notification handler.
 // On a right-button click, it creates a popup menu
 // On a left-button double click, it executes the default popup menu
 // item which unhides the application.
-LONG CMainFrame::OnMyNotify ( WPARAM wParam, LPARAM lParam ) 
+LONG CMainFrame::OnMyNotify(WPARAM wParam, LPARAM lParam)
 {
-	switch ( lParam )
+	switch (lParam)
 	{
-		case WM_RBUTTONDOWN:
-		{
-			CMenu menu ;
-			VERIFY(menu.LoadMenu(IDR_POPUPMENU));
-			CMenu* pPopup = menu.GetSubMenu ( 0 ) ;
-			ASSERT(pPopup != NULL);
-			POINT pt ;
-			GetCursorPos ( &pt ) ;
-			pPopup->TrackPopupMenu ( TPM_LEFTALIGN | TPM_RIGHTBUTTON,
-											  pt.x, pt.y, AfxGetMainWnd() ) ;
-			break ;
-		}
-		case WM_LBUTTONDBLCLK:
-			if ( m_bHidden )	// only if we're not already visible
-				OnUnHide() ;
-			break ;
+	case WM_RBUTTONDOWN:
+	{
+		CMenu menu;
+		VERIFY(menu.LoadMenu(IDR_POPUPMENU));
+		CMenu* pPopup = menu.GetSubMenu(0);
+		ASSERT(pPopup != NULL);
+		POINT pt;
+		GetCursorPos(&pt);
+		pPopup->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON,
+			pt.x, pt.y, AfxGetMainWnd());
+		break;
 	}
-	return ( 0 ) ;
+	case WM_LBUTTONDBLCLK:
+		if (m_bHidden)	// only if we're not already visible
+			OnUnHide();
+		break;
+	}
+	return (0);
 }
 
 // Override WM_CLOSE so that clicking on the Close Application button
 // simply hides the window. To really close the application, the File/Exit
 // item is selected which sets the m_bOkToClose flag and allows us to call
 // OnClose().
-void CMainFrame::OnClose() 
+void CMainFrame::OnClose()
 {
-	if ( theApp.m_bOkToClose )
+	if (theApp.m_bOkToClose)
 	{
-		KillTimer ( IDT_SANITY_TIME ) ;
-		if ( m_pTray )	// remove icon from taskbar tray
+		KillTimer(IDT_SANITY_TIME);
+		if (m_pTray)	// remove icon from taskbar tray
 		{
-			delete m_pTray ;
-			m_pTray = NULL ;
+			delete m_pTray;
+			m_pTray = NULL;
 		}
-		CFrameWnd::OnClose() ;
+		CFrameWnd::OnClose();
 	}
 	else	// otherwise, just hide ourselves and stay alive
 	{
-		theApp.HideApplication() ;
-		m_bHidden = TRUE ;
+		theApp.HideApplication();
+		m_bHidden = TRUE;
 	}
 }
 
 // Make sure we've removed the icon from the taskbar
-void CMainFrame::OnDestroy() 
+void CMainFrame::OnDestroy()
 {
 	CFrameWnd::OnDestroy();
-	if ( m_pTray )	// remove icon from taskbar tray
+	if (m_pTray)	// remove icon from taskbar tray
 	{
-		delete m_pTray ;
-		m_pTray = NULL ;
+		delete m_pTray;
+		m_pTray = NULL;
 	}
 }
 
 // This is executed whenever the message queue is empty.
 // See Paul DiLascia's C/C++ column in MSJ Oct. 1994.
-LRESULT CMainFrame::OnIdleUpdateCmdUI ( WPARAM wParam, LPARAM )
+LRESULT CMainFrame::OnIdleUpdateCmdUI(WPARAM wParam, LPARAM)
 {
 	// update the tray icon
-	NotifyHandler ( ((CWebDoc*)GetActiveDocument())->ActiveClients() ) ;
+	NotifyHandler(((CWebDoc*)GetActiveDocument())->ActiveClients());
 	return 0L;
 }

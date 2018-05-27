@@ -39,8 +39,8 @@ END_MESSAGE_MAP()
 
 CWebApp::CWebApp()
 {
-	m_bOkToClose = TRUE ;	// for overriding WM_CLOSE
-	m_State = ST_NULL ;	// not running yet
+	m_bOkToClose = TRUE;	// for overriding WM_CLOSE
+	m_State = ST_NULL;	// not running yet
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -71,25 +71,25 @@ BOOL CWebApp::InitInstance()
 #endif
 
 	// use the registry - do this before LoadStdProfileSettings()
- 	SetRegistryKey ( IDS_REG_STRING ) ;
+	SetRegistryKey(IDS_REG_STRING);
 #if _MFC_VER < 0x0400
-	HKEY hKey = GetAppRegistryKey() ;	// this creates the key initally
-	RegCloseKey ( hKey ) ;
+	HKEY hKey = GetAppRegistryKey();	// this creates the key initally
+	RegCloseKey(hKey);
 #endif
 	LoadStdProfileSettings();  // Load standard INI file options (including MRU)
-	LoadProps() ;				// Load all other application-specific properties
+	LoadProps();				// Load all other application-specific properties
 
 	// load our application icons
-	m_pIconList[0] = LoadIcon ( MAKEINTRESOURCE(IDR_MAINFRAME) ) ;
-	m_pIconList[1] = LoadIcon ( MAKEINTRESOURCE(IDI_IDLE) ) ;
-	m_pIconList[2] = LoadIcon ( MAKEINTRESOURCE(IDI_CONNECT) ) ;
+	m_pIconList[0] = LoadIcon(MAKEINTRESOURCE(IDR_MAINFRAME));
+	m_pIconList[1] = LoadIcon(MAKEINTRESOURCE(IDI_IDLE));
+	m_pIconList[2] = LoadIcon(MAKEINTRESOURCE(IDI_CONNECT));
 
 	// If we're running on Windows 95, we want to be hidden initially.
 	// We know we're running from the notification icon in the system tray
-	if ( ( GetVersion() & 0xff ) >= 4 )
+	if ((GetVersion() & 0xff) >= 4)
 	{
-		m_bOkToClose = FALSE ;	// for overriding WM_CLOSE
-		m_nCmdShow = SW_HIDE ;
+		m_bOkToClose = FALSE;	// for overriding WM_CLOSE
+		m_nCmdShow = SW_HIDE;
 	}
 
 	// Register the application's document templates.  Document templates
@@ -104,13 +104,13 @@ BOOL CWebApp::InitInstance()
 	AddDocTemplate(pDocTemplate);
 
 	// Display the operating tip if running under Windows 95
-	if ( ( (GetVersion() & 0xff) >= 4 ) &&
-			GetProfileInt("","StartTip",0) == 0 )
+	if (((GetVersion() & 0xff) >= 4) &&
+		GetProfileInt("", "StartTip", 0) == 0)
 	{
-		CSplash dlg ;
-		dlg.m_bNoNag = FALSE ;
-		dlg.DoModal() ;
-		WriteProfileInt ( "", "StartTip", dlg.m_bNoNag ) ;
+		CSplash dlg;
+		dlg.m_bNoNag = FALSE;
+		dlg.DoModal();
+		WriteProfileInt("", "StartTip", dlg.m_bNoNag);
 	}
 
 	// Parse command line for standard shell commands, DDE, file open
@@ -132,14 +132,14 @@ class CAboutDlg : public CDialog
 public:
 	CAboutDlg();
 
-// Dialog Data
-	//{{AFX_DATA(CAboutDlg)
+	// Dialog Data
+		//{{AFX_DATA(CAboutDlg)
 	enum { IDD = IDD_ABOUTBOX };
 	//}}AFX_DATA
 
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CAboutDlg)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 
@@ -182,50 +182,50 @@ void CWebApp::OnAppAbout()
 
 void CWebApp::LoadProps()
 {
-	m_wwwPort		= GetProfileInt ( "Server", "PortNumber", 80 ) ;
-	m_nMaxConnects	= GetProfileInt ( "Server", "MaxClients", 10 ) ;
-	m_nTimeOut		= GetProfileInt ( "Server", "Timeout",    600 ) ;
-	m_nSanityTime	= GetProfileInt ( "Server", "Sanity",     60 ) ;
+	m_wwwPort = GetProfileInt("Server", "PortNumber", 80);
+	m_nMaxConnects = GetProfileInt("Server", "MaxClients", 10);
+	m_nTimeOut = GetProfileInt("Server", "Timeout", 600);
+	m_nSanityTime = GetProfileInt("Server", "Sanity", 60);
 
-	m_HTMLPath		= GetProfileString ( "HTML", "Dir",     ".\\html" ) ;
-	m_HTMLDefault	= GetProfileString ( "HTML", "Default", "default.htm" ) ;
-	m_HTMLBogus		= GetProfileString ( "HTML", "Bogus",   "bogus.htm" ) ;
-	m_HTMLTag		= GetProfileString ( "HTML", "Tag",     "tag.htm" ) ;
-	m_nTagType		= (TAG_TYPE)GetProfileInt ( "HTML", "TagType", TAG_AUTO ) ;
+	m_HTMLPath = GetProfileString("HTML", "Dir", ".\\html");
+	m_HTMLDefault = GetProfileString("HTML", "Default", "default.htm");
+	m_HTMLBogus = GetProfileString("HTML", "Bogus", "bogus.htm");
+	m_HTMLTag = GetProfileString("HTML", "Tag", "tag.htm");
+	m_nTagType = (TAG_TYPE)GetProfileInt("HTML", "TagType", TAG_AUTO);
 
-	m_bLogEnable	= GetProfileInt    ( "Logging", "Enable",  1 ) ;
-	m_LogPath		= GetProfileString ( "Logging", "LogFile", ".\\webster.log" ) ;
+	m_bLogEnable = GetProfileInt("Logging", "Enable", 1);
+	m_LogPath = GetProfileString("Logging", "LogFile", ".\\webster.log");
 
-	m_bShowStatus			= GetProfileInt ( "Status", "Enable",     1 ) ;
-	m_bResolveClientname	= GetProfileInt ( "Status", "ClientName", 0 ) ;
-	m_bDebugOutput			= GetProfileInt ( "Status", "Debug",      0 ) ;
+	m_bShowStatus = GetProfileInt("Status", "Enable", 1);
+	m_bResolveClientname = GetProfileInt("Status", "ClientName", 0);
+	m_bDebugOutput = GetProfileInt("Status", "Debug", 0);
 
-	m_bEnableSound	= GetProfileInt ( "Alert", "SoundNotify", 1 ) ;
-	m_bEnableIcon	= GetProfileInt ( "Alert", "IconNotify", 1 ) ;
+	m_bEnableSound = GetProfileInt("Alert", "SoundNotify", 1);
+	m_bEnableIcon = GetProfileInt("Alert", "IconNotify", 1);
 }
 
 void CWebApp::SaveProps()
 {
-	WriteProfileInt ( "Server", "PortNumber", m_wwwPort ) ;
-	WriteProfileInt ( "Server", "MaxClients", m_nMaxConnects ) ;
-	WriteProfileInt ( "Server", "Timeout",    m_nTimeOut ) ;
-	WriteProfileInt ( "Server", "Sanity",     m_nSanityTime ) ;
+	WriteProfileInt("Server", "PortNumber", m_wwwPort);
+	WriteProfileInt("Server", "MaxClients", m_nMaxConnects);
+	WriteProfileInt("Server", "Timeout", m_nTimeOut);
+	WriteProfileInt("Server", "Sanity", m_nSanityTime);
 
-	WriteProfileString ( "HTML", "Dir",     m_HTMLPath ) ;
-	WriteProfileString ( "HTML", "Default", m_HTMLDefault ) ;
-	WriteProfileString ( "HTML", "Bogus",   m_HTMLBogus ) ;
-	WriteProfileString ( "HTML", "Tag",     m_HTMLTag ) ;
-	WriteProfileInt    ( "HTML", "TagType", m_nTagType ) ;
+	WriteProfileString("HTML", "Dir", m_HTMLPath);
+	WriteProfileString("HTML", "Default", m_HTMLDefault);
+	WriteProfileString("HTML", "Bogus", m_HTMLBogus);
+	WriteProfileString("HTML", "Tag", m_HTMLTag);
+	WriteProfileInt("HTML", "TagType", m_nTagType);
 
-	WriteProfileInt    ( "Logging", "Enable",  m_bLogEnable ) ;
-	WriteProfileString ( "Logging", "LogFile", m_LogPath ) ;
+	WriteProfileInt("Logging", "Enable", m_bLogEnable);
+	WriteProfileString("Logging", "LogFile", m_LogPath);
 
-	WriteProfileInt ( "Status", "Status",     m_bShowStatus ) ;
-	WriteProfileInt ( "Status", "ClientName", m_bResolveClientname ) ;
-	WriteProfileInt ( "Status", "Debug",      m_bDebugOutput ) ;
+	WriteProfileInt("Status", "Status", m_bShowStatus);
+	WriteProfileInt("Status", "ClientName", m_bResolveClientname);
+	WriteProfileInt("Status", "Debug", m_bDebugOutput);
 
-	WriteProfileInt ( "Alert", "SoundNotify",	m_bEnableSound ) ;
-	WriteProfileInt ( "Alert", "IconNotify",	m_bEnableIcon ) ;
+	WriteProfileInt("Alert", "SoundNotify", m_bEnableSound);
+	WriteProfileInt("Alert", "IconNotify", m_bEnableIcon);
 }
 
 // This is a table for translating WinSock error codes into text messages.
@@ -234,8 +234,8 @@ void CWebApp::SaveProps()
 // cryptic WSAE codes can be translated into more infomative descriptions.
 static struct _tagWSATable
 {
-	DWORD		dwCode ;
-	LPCTSTR	szMsg ;
+	DWORD		dwCode;
+	LPCTSTR	szMsg;
 } _WSATable[] = {
 	// Windows Sockets definitions of regular Microsoft C error constants
 	{ WSAEINTR          , "INTR" },
@@ -283,54 +283,54 @@ static struct _tagWSATable
 	{ WSAESTALE         , "STALE" },
 	{ WSAEREMOTE        , "REMOTE" },
 	{ WSAEDISCON        , "DISCON" }
-} ;
-static const int _WSATableLen = sizeof(_WSATable)/sizeof(struct _tagWSATable) ;
+};
+static const int _WSATableLen = sizeof(_WSATable) / sizeof(struct _tagWSATable);
 
 // This routine returns a string formatted from the system error message
 // database. As noted, FormatMessage() does not yet handle WinSock errors,
 // so we must handle them ourselves.
-LPSTR CWebApp::MapErrMsg ( DWORD dwErr )
+LPSTR CWebApp::MapErrMsg(DWORD dwErr)
 {
 	// __declspec (thread) necessary if you will use multiple threads
 #if __BORLANDC__
-	static char szMsgBuf[128] ;
+	static char szMsgBuf[128];
 #else
-	__declspec (thread) static char szMsgBuf[128] ;
+	__declspec (thread) static char szMsgBuf[128];
 #endif
 
-	if ( dwErr > WSABASEERR )	// check for WinSock error
+	if (dwErr > WSABASEERR)	// check for WinSock error
 	{
 		// default message in case table lookup fails
-		wsprintf ( szMsgBuf, "WinSock Error: %ld", dwErr ) ;
-		for ( int i = 0 ; i < _WSATableLen ; i++ )
+		wsprintf(szMsgBuf, "WinSock Error: %ld", dwErr);
+		for (int i = 0; i < _WSATableLen; i++)
 		{
-			if ( dwErr == _WSATable[i].dwCode )
+			if (dwErr == _WSATable[i].dwCode)
 			{
-				wsprintf ( szMsgBuf, "WinSock Error: WSA%s", _WSATable[i].szMsg ) ;
-				break ;
+				wsprintf(szMsgBuf, "WinSock Error: WSA%s", _WSATable[i].szMsg);
+				break;
 			}
 		}
 	}
 	else	// otherwise, default system error
 	{
 		// default message in case FormatMessage fails
-		wsprintf ( szMsgBuf, "Error %ld", dwErr ) ;
-		::FormatMessage ( FORMAT_MESSAGE_FROM_SYSTEM,
-						  NULL,
-						  dwErr,
-						  LANG_NEUTRAL,
-						  szMsgBuf,
-						  sizeof(szMsgBuf),
-						  NULL ) ;
+		wsprintf(szMsgBuf, "Error %ld", dwErr);
+		::FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM,
+			NULL,
+			dwErr,
+			LANG_NEUTRAL,
+			szMsgBuf,
+			sizeof(szMsgBuf),
+			NULL);
 	}
-	return ( szMsgBuf ) ;
+	return (szMsgBuf);
 }
 
 /////////////////////////////////////////////////////////////////////////////
 // CWebApp commands
 
-void CWebApp::OnAppExit() 
+void CWebApp::OnAppExit()
 {
-	m_bOkToClose = TRUE ;
-	CWinApp::OnAppExit() ;
+	m_bOkToClose = TRUE;
+	CWinApp::OnAppExit();
 }

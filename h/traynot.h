@@ -10,27 +10,27 @@
 
 class CTrayNot : public CObject
 {
-// Construction
+	// Construction
 public:
-	CTrayNot ( CWnd* pWnd, UINT uCallbackMessage,
-				  LPCTSTR szTip, HICON* pList ) ;
+	CTrayNot(CWnd* pWnd, UINT uCallbackMessage,
+		LPCTSTR szTip, HICON* pList);
 
-// Attributes
+	// Attributes
 public:
-	BOOL				m_bEnabled ;	// does O/S support tray icon?
-	NOTIFYICONDATA	m_tnd ;
-	HICON*			m_pIconList ;	// caller's list of status icons
+	BOOL				m_bEnabled;	// does O/S support tray icon?
+	NOTIFYICONDATA	m_tnd;
+	HICON*			m_pIconList;	// caller's list of status icons
 
 // Operations
 public:
-	void SetState ( int id = 0 ) ;
+	void SetState(int id = 0);
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CTrayNot)
-	//}}AFX_VIRTUAL
+	// Overrides
+		// ClassWizard generated virtual function overrides
+		//{{AFX_VIRTUAL(CTrayNot)
+		//}}AFX_VIRTUAL
 
-// Implementation
+	// Implementation
 public:
 	virtual ~CTrayNot();
 

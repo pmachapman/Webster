@@ -189,49 +189,49 @@ BEGIN_MESSAGE_MAP(CAlert, CPropertyPage)
 END_MESSAGE_MAP()
 
 
-void CHTML::OnHtmlBrowse() 
+void CHTML::OnHtmlBrowse()
 {
 	// these are used for decomposing/recomposing file pathnames
 	char	gcDrive[3],			// initial directory path
-			gcDir[MAX_PATH],
-			gcFname[MAX_PATH],
-			gcExt[MAX_PATH] ;
-	char	gcPath[MAX_PATH] ;	// recomposed direcory path
+		gcDir[MAX_PATH],
+		gcFname[MAX_PATH],
+		gcExt[MAX_PATH];
+	char	gcPath[MAX_PATH];	// recomposed direcory path
 
 	// create basic file open dialog
-	CFileDialog dlg ( TRUE,
-					  "html",
-					  m_DefaultPath,
-					  OFN_HIDEREADONLY |
-					  OFN_PATHMUSTEXIST |
-					  OFN_FILEMUSTEXIST,
-					  "HTML Files|*.htm*;|All Files|*.*||",
-					  NULL ) ;
+	CFileDialog dlg(TRUE,
+		"html",
+		m_DefaultPath,
+		OFN_HIDEREADONLY |
+		OFN_PATHMUSTEXIST |
+		OFN_FILEMUSTEXIST,
+		"HTML Files|*.htm*;|All Files|*.*||",
+		NULL);
 	// set the title
-	dlg.m_ofn.lpstrTitle = "Default HTML File Select" ;
+	dlg.m_ofn.lpstrTitle = "Default HTML File Select";
 	// set the initial directory
-	CString PathName ;
-	CEdit *pEB_Path = (CEdit *)GetDlgItem ( IDC_HTML_PATH ) ;
-	pEB_Path->GetWindowText ( PathName ) ;
-	dlg.m_ofn.lpstrInitialDir = PathName ;
+	CString PathName;
+	CEdit *pEB_Path = (CEdit *)GetDlgItem(IDC_HTML_PATH);
+	pEB_Path->GetWindowText(PathName);
+	dlg.m_ofn.lpstrInitialDir = PathName;
 	// set the initial filename
-	char fna[MAX_PATH] ;
-	CEdit *pEB_Name = (CEdit *)GetDlgItem ( IDC_HTML_DEFAULT ) ;
+	char fna[MAX_PATH];
+	CEdit *pEB_Name = (CEdit *)GetDlgItem(IDC_HTML_DEFAULT);
 	// get current filename from edit box
-	pEB_Name->GetWindowText ( fna, MAX_PATH ) ;
-	dlg.m_ofn.lpstrFile = fna ;
-	if ( dlg.DoModal() == IDOK )	// get new filename
+	pEB_Name->GetWindowText(fna, MAX_PATH);
+	dlg.m_ofn.lpstrFile = fna;
+	if (dlg.DoModal() == IDOK)	// get new filename
 	{
 		// get components of new filename
-		m_DefaultPath = dlg.GetPathName() ;	// full filename
-		_splitpath ( m_DefaultPath, gcDrive, gcDir, gcFname, gcExt ) ;
+		m_DefaultPath = dlg.GetPathName();	// full filename
+		_splitpath(m_DefaultPath, gcDrive, gcDir, gcFname, gcExt);
 
 		// display path only in IDC_HTML_PATH
-		_makepath ( gcPath, gcDrive, gcDir, NULL, NULL ) ;
-		pEB_Path->SetWindowText ( gcPath ) ;
+		_makepath(gcPath, gcDrive, gcDir, NULL, NULL);
+		pEB_Path->SetWindowText(gcPath);
 
 		// show filename only in IDC_HTML_DEFAULT
-		m_DefaultName = dlg.GetFileTitle() ;
+		m_DefaultName = dlg.GetFileTitle();
 #if	_MFC_VER >= 0x0400
 		// Prior to MFC 4.0, GetFileTitle() returned the base filename with
 		// the extension. However, it now only returns the base filename.
@@ -240,58 +240,58 @@ void CHTML::OnHtmlBrowse()
 		// behavior will no doubt be corrected, or the documentation changed
 		// to match the behavior, in future releases. For the time being, my
 		// workaround is to graft the extension back onto the base filename.
-		m_DefaultName += gcExt ;
+		m_DefaultName += gcExt;
 #endif
 		// transfer back to edit box
-		pEB_Name->SetWindowText ( m_DefaultName ) ;
+		pEB_Name->SetWindowText(m_DefaultName);
 	}
 }
 
-void CLogging::OnLogBrowse() 
+void CLogging::OnLogBrowse()
 {
 	// these are used for decomposing/recomposing file pathnames
 	char	gcDrive[3],			// initial directory path
-			gcDir[MAX_PATH],
-			gcFname[MAX_PATH],
-			gcExt[MAX_PATH] ;
-	char	gcPath[MAX_PATH] ;	// recomposed direcory path
+		gcDir[MAX_PATH],
+		gcFname[MAX_PATH],
+		gcExt[MAX_PATH];
+	char	gcPath[MAX_PATH];	// recomposed direcory path
 
 	// create basic file open dialog
-	CFileDialog dlg ( TRUE,
-					  "log",
-					  m_LogPath,
-					  OFN_HIDEREADONLY,
-					  "Log Files|*.log;|All Files|*.*||",
-					  NULL ) ;
+	CFileDialog dlg(TRUE,
+		"log",
+		m_LogPath,
+		OFN_HIDEREADONLY,
+		"Log Files|*.log;|All Files|*.*||",
+		NULL);
 	// set the title
-	dlg.m_ofn.lpstrTitle = "Log File Select" ;
+	dlg.m_ofn.lpstrTitle = "Log File Select";
 	// set the initial directory
-	CString PathName ;
-	CEdit *pEB_Path = (CEdit *)GetDlgItem ( IDC_LOG_PATH ) ;
-	pEB_Path->GetWindowText ( PathName ) ;
-	_splitpath ( PathName, gcDrive, gcDir, gcFname, gcExt ) ;
-	_makepath ( gcPath, gcDrive, gcDir, NULL, NULL ) ;
-	dlg.m_ofn.lpstrInitialDir = gcPath ;
+	CString PathName;
+	CEdit *pEB_Path = (CEdit *)GetDlgItem(IDC_LOG_PATH);
+	pEB_Path->GetWindowText(PathName);
+	_splitpath(PathName, gcDrive, gcDir, gcFname, gcExt);
+	_makepath(gcPath, gcDrive, gcDir, NULL, NULL);
+	dlg.m_ofn.lpstrInitialDir = gcPath;
 	// set the initial filename
-	char fna[MAX_PATH] ;
-	_makepath ( fna, NULL, NULL, gcFname, gcExt ) ;
-	dlg.m_ofn.lpstrFile = fna ;
-	if ( dlg.DoModal() == IDOK )	// get new filename
+	char fna[MAX_PATH];
+	_makepath(fna, NULL, NULL, gcFname, gcExt);
+	dlg.m_ofn.lpstrFile = fna;
+	if (dlg.DoModal() == IDOK)	// get new filename
 	{
-		m_LogPath = dlg.GetPathName() ;	// full pathname
-		pEB_Path->SetWindowText ( m_LogPath ) ;
+		m_LogPath = dlg.GetPathName();	// full pathname
+		pEB_Path->SetWindowText(m_LogPath);
 	}
 }
 
-void CAlert::OnPaint() 
+void CAlert::OnPaint()
 {
 	CPaintDC dc(this); // device context for painting
-	
-	CWnd* cWnd = GetDlgItem ( IDI_ICON_IDLE ) ;
-	CPaintDC idleDC(cWnd) ;
-	idleDC.DrawIcon ( 0, 0, m_hIdle ) ;
 
-	cWnd = GetDlgItem ( IDI_ICON_ACTIVE ) ;
-	CPaintDC activeDC(cWnd) ;
-	activeDC.DrawIcon ( 0, 0, m_hActive ) ;
+	CWnd* cWnd = GetDlgItem(IDI_ICON_IDLE);
+	CPaintDC idleDC(cWnd);
+	idleDC.DrawIcon(0, 0, m_hIdle);
+
+	cWnd = GetDlgItem(IDI_ICON_ACTIVE);
+	CPaintDC activeDC(cWnd);
+	activeDC.DrawIcon(0, 0, m_hActive);
 }

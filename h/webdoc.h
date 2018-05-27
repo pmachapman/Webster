@@ -5,8 +5,8 @@
 // for Microsoft Systems Journal
 //
 
-class CListen ;	// forward reference
-class CClient ;	//...ditto...
+class CListen;	// forward reference
+class CClient;	//...ditto...
 
 #include "logger.h"		// ofstream
 
@@ -16,50 +16,50 @@ protected: // create from serialization only
 	CWebDoc();
 	DECLARE_DYNCREATE(CWebDoc)
 
-// Attributes
+	// Attributes
 public:
-	CStringList	m_strList ;		// Status text buffer
-	CString		m_strInfo ;		// Current text construction buffer
-	int			m_nLines ;		// Number of lines currently in the
+	CStringList	m_strList;		// Status text buffer
+	CString		m_strInfo;		// Current text construction buffer
+	int			m_nLines;		// Number of lines currently in the
 								//   status text buffer
-	int			m_nMaxLines ;	// Size of status text buffer
+	int			m_nMaxLines;	// Size of status text buffer
 								//   Static for now, but we may want to make
 								//   this configurable someday
 
 private:
 	// Server
-	CListen*	m_pSocket ;			// our document's one and only listening socket (service port)
-	CPtrList	m_listConnects ;	// list of active connections
+	CListen * m_pSocket;			// our document's one and only listening socket (service port)
+	CPtrList	m_listConnects;	// list of active connections
 	// Logging
 #if _MFC_VER < 0x0700
-	ofstream	m_fileLog ;
+	ofstream	m_fileLog;
 #else
-	std::ofstream	m_fileLog ;
+	std::ofstream	m_fileLog;
 #endif
 
-// Operations
+	// Operations
 public:
 	// Server
-	void OnAccept() ;
-	void CheckIdleConnects() ;
-	void KillSocket ( CClient* pSocket ) ;
+	void OnAccept();
+	void CheckIdleConnects();
+	void KillSocket(CClient* pSocket);
 	// Logging
-	void OpenLogfile() ;
-	void WriteLog ( COMLOGREC& LogRec ) ;
+	void OpenLogfile();
+	void WriteLog(COMLOGREC& LogRec);
 	// Status
-	void Message ( LPCTSTR lpszMessage ) ;
-	void Message ( CString cMessage ) ;
-	void VMessage ( LPCTSTR lpszFormat, ... ) ;
-	void DbgMessage ( LPCTSTR lpszMessage ) ;
-	void DbgMessage ( CString cMessage ) ;
-	void DbgVMessage ( LPCTSTR lpszFormat, ... ) ;
-	BOOL ActiveClients() { return ( ! m_listConnects.IsEmpty() ) ; }
+	void Message(LPCTSTR lpszMessage);
+	void Message(CString cMessage);
+	void VMessage(LPCTSTR lpszFormat, ...);
+	void DbgMessage(LPCTSTR lpszMessage);
+	void DbgMessage(CString cMessage);
+	void DbgVMessage(LPCTSTR lpszFormat, ...);
+	BOOL ActiveClients() { return (!m_listConnects.IsEmpty()); }
 
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CWebDoc)
-	public:
+	// Overrides
+		// ClassWizard generated virtual function overrides
+		//{{AFX_VIRTUAL(CWebDoc)
+public:
 	virtual BOOL OnNewDocument();
 	virtual void Serialize(CArchive& ar);
 	virtual void OnCloseDocument();
@@ -76,7 +76,7 @@ public:
 
 protected:
 
-// Generated message map functions
+	// Generated message map functions
 protected:
 	//{{AFX_MSG(CWebDoc)
 	afx_msg void OnClearView();

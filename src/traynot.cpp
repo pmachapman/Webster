@@ -42,39 +42,39 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CTrayNot
 
-CTrayNot::CTrayNot ( CWnd* pWnd, UINT uCallbackMessage,
-							LPCTSTR szTip, HICON* pList )
+CTrayNot::CTrayNot(CWnd* pWnd, UINT uCallbackMessage,
+	LPCTSTR szTip, HICON* pList)
 {
 	// this is only for Windows 95 (or higher)
-	m_bEnabled = ( GetVersion() & 0xff ) >= 4 ;
-	if ( ! m_bEnabled )
-		return ;
+	m_bEnabled = (GetVersion() & 0xff) >= 4;
+	if (!m_bEnabled)
+		return;
 
 	// load up the NOTIFYICONDATA structure
-	m_tnd.cbSize = sizeof(NOTIFYICONDATA) ;
-	m_tnd.hWnd = pWnd->GetSafeHwnd() ;
-	m_tnd.uID = 0 ;
-	m_tnd.uFlags = NIF_MESSAGE | NIF_ICON | NIF_TIP ;
-	m_tnd.uCallbackMessage = uCallbackMessage ;
-	strcpy ( m_tnd.szTip, szTip ) ;
+	m_tnd.cbSize = sizeof(NOTIFYICONDATA);
+	m_tnd.hWnd = pWnd->GetSafeHwnd();
+	m_tnd.uID = 0;
+	m_tnd.uFlags = NIF_MESSAGE | NIF_ICON | NIF_TIP;
+	m_tnd.uCallbackMessage = uCallbackMessage;
+	strcpy(m_tnd.szTip, szTip);
 
 	// save the pointer to the icon list and set the initial
 	// default icon.
-	m_pIconList = pList ;
-	m_tnd.hIcon = m_pIconList[0] ;
-	Shell_NotifyIcon ( NIM_ADD, &m_tnd ) ;
+	m_pIconList = pList;
+	m_tnd.hIcon = m_pIconList[0];
+	Shell_NotifyIcon(NIM_ADD, &m_tnd);
 }
 
 CTrayNot::~CTrayNot()
 {
-	if ( m_bEnabled )
-		Shell_NotifyIcon ( NIM_DELETE, &m_tnd ) ;
+	if (m_bEnabled)
+		Shell_NotifyIcon(NIM_DELETE, &m_tnd);
 }
 
-void CTrayNot::SetState ( int id )
+void CTrayNot::SetState(int id)
 {
-	if ( ! m_bEnabled )
-		return ;
-	m_tnd.hIcon = m_pIconList[id] ;
-	Shell_NotifyIcon ( NIM_MODIFY, &m_tnd ) ;
+	if (!m_bEnabled)
+		return;
+	m_tnd.hIcon = m_pIconList[id];
+	Shell_NotifyIcon(NIM_MODIFY, &m_tnd);
 }

@@ -11,7 +11,7 @@
 
 CListen::CListen(CWebDoc* pDoc)
 {
-	m_pDoc = pDoc ;	// save doc pointer for later use
+	m_pDoc = pDoc;	// save doc pointer for later use
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -20,7 +20,7 @@ CListen::CListen(CWebDoc* pDoc)
 void CListen::OnAccept(int nErrorCode)
 {
 	CSocket::OnAccept(nErrorCode);
-	m_pDoc->OnAccept() ;	// process this in the context of the document
+	m_pDoc->OnAccept();	// process this in the context of the document
 }
 
 /////////////////////////////////////////////////////////////////////////////

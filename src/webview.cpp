@@ -43,36 +43,36 @@ CWebView::~CWebView()
 
 void CWebView::OnDraw(CDC* pDC)
 {
-	CWebDoc* pDoc = GetDocument() ;	// we use this a lot...
+	CWebDoc* pDoc = GetDocument();	// we use this a lot...
 
 	// Anything to display?
-	pDoc->m_nLines = pDoc->m_strList.GetCount() ;
-	if ( pDoc->m_nLines == 0 )
-		return ;
-	POSITION strPos = pDoc->m_strList.GetHeadPosition() ;
-	if ( strPos == NULL )
-		return ;
+	pDoc->m_nLines = pDoc->m_strList.GetCount();
+	if (pDoc->m_nLines == 0)
+		return;
+	POSITION strPos = pDoc->m_strList.GetHeadPosition();
+	if (strPos == NULL)
+		return;
 
 	// Prepare for text drawing
-	TEXTMETRIC tm ;
-	pDC->GetTextMetrics ( &tm ) ;
-	pDC->SetBkMode ( TRANSPARENT ) ;
+	TEXTMETRIC tm;
+	pDC->GetTextMetrics(&tm);
+	pDC->SetBkMode(TRANSPARENT);
 
 	// The document owns the list of message strings, so we just walk
 	// this list, retrieving and displaying them.
-	CString strMsg ;
-	strMsg = pDoc->m_strList.GetAt ( strPos ) ;
-	for ( int i = 0, yval = 0 ;
-		  i < pDoc->m_nLines ;
-		  i++, yval += tm.tmHeight )
+	CString strMsg;
+	strMsg = pDoc->m_strList.GetAt(strPos);
+	for (int i = 0, yval = 0;
+		i < pDoc->m_nLines;
+		i++, yval += tm.tmHeight)
 	{
-		pDC->TextOut ( 0, yval,
-							strMsg, strMsg.GetLength() ) ;
-		if ( strPos == NULL )
-			break ;
-		strMsg = pDoc->m_strList.GetNext ( strPos ) ;
-	}		  
-	SetScrollSizes( MM_TEXT, CSize(0, (pDoc->m_nLines+1)*tm.tmHeight));
+		pDC->TextOut(0, yval,
+			strMsg, strMsg.GetLength());
+		if (strPos == NULL)
+			break;
+		strMsg = pDoc->m_strList.GetNext(strPos);
+	}
+	SetScrollSizes(MM_TEXT, CSize(0, (pDoc->m_nLines + 1)*tm.tmHeight));
 }
 
 void CWebView::OnInitialUpdate()
