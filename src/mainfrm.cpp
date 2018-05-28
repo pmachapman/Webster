@@ -176,7 +176,7 @@ void CMainFrame::OnUnHide()
 }
 
 // This is the WM_TIMER message handler for the periodic sanity check.
-void CMainFrame::OnTimer(UINT nIDEvent)
+void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 {
 	if (theApp.m_State == CWebApp::ST_NULL)
 		return;	// not running yet!
@@ -206,7 +206,7 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 // the document can't deal with WM_ messages, we have to initiate the
 // action from the main frame.
 // We also update the icon while we're at it.
-LONG CMainFrame::OnKillSocket(WPARAM wParam, LPARAM lParam)
+LRESULT CMainFrame::OnKillSocket(WPARAM wParam, LPARAM lParam)
 {
 	CWebDoc* pDoc = (CWebDoc*)GetActiveDocument();
 	pDoc->DbgMessage("   MainFrame::OnMsgKillSocket() ->");
@@ -218,7 +218,7 @@ LONG CMainFrame::OnKillSocket(WPARAM wParam, LPARAM lParam)
 // This handler is executed when the document creates a new client object.
 // Its only purpose is to set the notification mechanisms to indicate a
 // new client connection.
-LONG CMainFrame::OnNewClient(WPARAM wParam, LPARAM lParam)
+LRESULT CMainFrame::OnNewClient(WPARAM wParam, LPARAM lParam)
 {
 	NotifyHandler(TRUE);	// update the tray icon
 	if (theApp.m_bEnableSound)	// do the audible notification
@@ -233,7 +233,7 @@ LONG CMainFrame::OnNewClient(WPARAM wParam, LPARAM lParam)
 // This handler is executed when a new log file is needed. Usually only
 // triggered when the log file name is changed in the configuration
 // properties dialog.
-LONG CMainFrame::OnNewLogfile(WPARAM wParam, LPARAM lParam)
+LRESULT CMainFrame::OnNewLogfile(WPARAM wParam, LPARAM lParam)
 {
 	CWebDoc* pDoc = (CWebDoc*)GetActiveDocument();
 	pDoc->OpenLogfile();
@@ -244,7 +244,7 @@ LONG CMainFrame::OnNewLogfile(WPARAM wParam, LPARAM lParam)
 // On a right-button click, it creates a popup menu
 // On a left-button double click, it executes the default popup menu
 // item which unhides the application.
-LONG CMainFrame::OnMyNotify(WPARAM wParam, LPARAM lParam)
+LRESULT CMainFrame::OnMyNotify(WPARAM wParam, LPARAM lParam)
 {
 	switch (lParam)
 	{

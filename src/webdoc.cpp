@@ -92,7 +92,7 @@ BOOL CWebDoc::OnNewDocument()
 	if (ret)
 	{
 		theApp.m_State = CWebApp::ST_WAITING;
-		msg.Format("Port: %d", theApp.m_wwwPort);
+		msg.Format("Listening on port: %d", theApp.m_wwwPort);
 		SetTitle(msg);
 	}
 	else
@@ -110,6 +110,7 @@ BOOL CWebDoc::OnNewDocument()
 
 void CWebDoc::Serialize(CArchive& ar)
 {
+	CDocument::Serialize(ar);
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -217,7 +218,7 @@ void CWebDoc::CheckIdleConnects()
 		else if (pClient->m_LogRec.datetime < cNow)
 		{
 			char msg[80];
-			wsprintf(msg, ">>> Idle timeout on client: %s\n", pClient->m_PeerIP);
+			wsprintf(msg, ">>> Idle timeout on client: %s\n", (LPCSTR)pClient->m_PeerIP);
 			Message(msg);
 			KillSocket(pClient);
 		}
@@ -246,7 +247,13 @@ void CWebDoc::KillSocket(CClient* pSocket)
 			// looking for cause of accvio when client cancels transfer
 			// AsyncSelect causes accvio after Send has failed
 			if (pSocket->AsyncSelect(0) == 0)
+			{
 				DWORD err = GetLastError();
+				CString msg;
+				msg.Format("Listener socket cancelled: %s\n",
+					theApp.MapErrMsg(err));
+				Message(msg);
+			}
 			pSocket->Close();	//...debug...
 //(dec)...end of debug...
 			delete pSocket;	// destructor calls Close()
@@ -387,9 +394,7 @@ void CWebDoc::DbgVMessage(LPCTSTR lpszFormat, ...)
 // Class-Private handlers
 void CWebDoc::SetTitle(LPCTSTR lpszTitle)
 {
-	CString cTitle;
-	cTitle.Format("Listening on port: %d", theApp.m_wwwPort);
-	CDocument::SetTitle(cTitle);
+	CDocument::SetTitle(lpszTitle);
 }
 
 /////////////////////////////////////////////////////////////////////////////

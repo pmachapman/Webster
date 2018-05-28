@@ -54,11 +54,11 @@ protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnProperties();
 	afx_msg void OnUnHide();
-	afx_msg void OnTimer(UINT nIDEvent);
-	afx_msg LONG OnNewClient(UINT, LONG);
-	afx_msg LONG OnKillSocket(WPARAM wParam, LPARAM lParam);
-	afx_msg LONG OnNewLogfile(WPARAM wParam, LPARAM lParam);
-	afx_msg LONG OnMyNotify(UINT, LONG);
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	afx_msg LRESULT OnNewClient(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnKillSocket(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnNewLogfile(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnMyNotify(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnClose();
 	afx_msg void OnDestroy();
 	afx_msg LRESULT OnIdleUpdateCmdUI(WPARAM wParam, LPARAM);

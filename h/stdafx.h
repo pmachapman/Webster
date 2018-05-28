@@ -12,3 +12,4 @@
 
 #include "compat.h"			// CRT secure function compatibility
 
+#pragma warning( disable : 4100)

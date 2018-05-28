@@ -46,7 +46,7 @@ void CWebView::OnDraw(CDC* pDC)
 	CWebDoc* pDoc = GetDocument();	// we use this a lot...
 
 	// Anything to display?
-	pDoc->m_nLines = pDoc->m_strList.GetCount();
+	pDoc->m_nLines = (int)pDoc->m_strList.GetCount();
 	if (pDoc->m_nLines == 0)
 		return;
 	POSITION strPos = pDoc->m_strList.GetHeadPosition();

@@ -64,7 +64,7 @@ BOOL CClient::ProcessPendingRead()
 		pEOL = strpbrk(pBOL, "\r"))
 	{
 		*pEOL = '\0';	// make this chunk an SZ string
-		m_cList.AddTail(CString(pBOL, strlen(pBOL))); // add to list
+		m_cList.AddTail(CString(pBOL, (int)strlen(pBOL))); // add to list
 		*pEOL++;		// skip '\0'
 		*pEOL++;		// skip '\n'
 		pBOL = pEOL;	// point to next text
@@ -130,13 +130,13 @@ void CClient::ParseReq()
 		pEOL = strpbrk(pBOL, " "))
 	{
 		*pEOL = '\0';
-		CString tempToken(pBOL, strlen(pBOL));
+		CString tempToken(pBOL, (int)strlen(pBOL));
 		*pEOL++;	// skip '\0'
 		pBOL = pEOL;
 		cList.AddTail(tempToken);
 	}
 	// save whatever's left as the last token
-	CString tempToken(pBOL, strlen(pBOL));
+	CString tempToken(pBOL, (int)strlen(pBOL));
 	cList.AddTail(tempToken);
 	delete tempmsg;
 
@@ -167,7 +167,7 @@ void CClient::ParseReq()
 		return;
 	}
 	m_cURI = cList.GetNext(pos);	// pointing to ENTITY now
-	m_pDoc->VMessage("   Data request: %s\n", m_cURI);
+	m_pDoc->VMessage("   Data request: %s\n", (LPCTSTR)m_cURI);
 
 	// replace UNIX '/' with MS '\'
 	for (i = 0; i < m_cURI.GetLength(); i++)
@@ -196,12 +196,12 @@ void CClient::ParseReq()
 	// parse the client's capabilities here...
 	if (theApp.m_bDebugOutput)
 	{
-		POSITION pos = m_cList.GetHeadPosition();
-		for (int i = 0; i < m_cList.GetCount(); i++)
+		pos = m_cList.GetHeadPosition();
+		for (i = 0; i < m_cList.GetCount(); i++)
 		{
 			// For now, we'll just have a boo at them. Being such a simple
 			// server, let's not get too concerned with details.
-			m_pDoc->DbgVMessage("   %d>%s\n", i + 1, m_cList.GetNext(pos));
+			m_pDoc->DbgVMessage("   %d>%s\n", i + 1, (LPCTSTR)m_cList.GetNext(pos));
 		}
 	}
 }	// ParseReq()
@@ -218,8 +218,8 @@ void CClient::ProcessReq()
 	// can only handle GETs for now
 	if (m_nMethod != METHOD_GET)
 	{
-		m_pDoc->VMessage("   Unknown method requested: %s\n", m_cURI);
-		SendCannedMsg(405, m_cURI);
+		m_pDoc->VMessage("   Unknown method requested: %s\n", (LPCTSTR)m_cURI);
+		SendCannedMsg(405, (LPCTSTR)m_cURI);
 		return;
 	}
 
@@ -240,7 +240,7 @@ void CClient::ProcessReq()
 	}
 	else	// must be a CGI script specification
 	{
-		m_pDoc->DbgVMessage("   CGI request: %s %s\n", m_cLocalFNA, m_cURI);
+		m_pDoc->DbgVMessage("   CGI request: %s %s\n", (LPCTSTR)m_cLocalFNA, (LPCTSTR)m_cURI);
 		if (!SendCGI(m_cLocalFNA, m_cURI))
 		{
 			// ...insert CGI-implementation dependant actions here...
@@ -292,7 +292,7 @@ BOOL CClient::SendReplyHeader(CFile& cFile)
 	// 2
 	CTime rTime = CTime::GetCurrentTime();
 	tmp.Format("Date: %s\r\n",
-		rTime.FormatGmt("%a, %d %b %Y %H:%M:%S GMT"));
+		(LPCSTR)rTime.FormatGmt("%a, %d %b %Y %H:%M:%S GMT"));
 	SendData(tmp);
 	// 3
 	SendData("Server: Webster/1.0\r\n");
@@ -320,7 +320,7 @@ BOOL CClient::SendReplyHeader(CFile& cFile)
 	if (cFile.GetStatus(rStatus))
 	{
 		tmp.Format("Last-modified: %s\r\n",
-			rStatus.m_mtime.FormatGmt("%a, %d %b %Y %H:%M:%S GMT"));
+			(LPCSTR)rStatus.m_mtime.FormatGmt("%a, %d %b %Y %H:%M:%S GMT"));
 		SendData(tmp);
 	}
 	// 7
@@ -359,7 +359,7 @@ void CClient::SendTag()
 /////////////////////////////////////////////////////////////////////////////
 // URI file handler
 
-BOOL CClient::SendFile(CString& m_cLocalFNA, CString& BaseFNA,
+BOOL CClient::SendFile(CString& SendFNA, CString& BaseFNA,
 	BOOL bTagMsg)
 {
 	CFile cFile;
@@ -368,7 +368,7 @@ BOOL CClient::SendFile(CString& m_cLocalFNA, CString& BaseFNA,
 	// if our request isn't empty, then try to open the file specified
 	if (m_cLocalFNA != theApp.m_HTMLPath + CString("\\"))
 	{
-		m_pDoc->DbgVMessage("Attempting to open: %s\n", m_cLocalFNA);
+		m_pDoc->DbgVMessage("Attempting to open: %s\n", (LPCTSTR)m_cLocalFNA);
 		FoundIt = cFile.Open(m_cLocalFNA,
 			CFile::modeRead | CFile::typeBinary);
 	}
@@ -384,7 +384,7 @@ BOOL CClient::SendFile(CString& m_cLocalFNA, CString& BaseFNA,
 		if (!FoundIt)
 		{
 			m_pDoc->DbgVMessage("Couldn't find: %s\nTrying Bogus - ",
-				m_cLocalFNA);
+				(LPCTSTR)m_cLocalFNA);
 			m_cLocalFNA = theApp.m_HTMLPath + CString("\\")
 				+ theApp.m_HTMLBogus;
 			FoundIt = cFile.Open(m_cLocalFNA,
@@ -394,14 +394,14 @@ BOOL CClient::SendFile(CString& m_cLocalFNA, CString& BaseFNA,
 	if (!FoundIt)
 	{
 		m_pDoc->DbgVMessage("Couldn't find: %s\nSending 404 error\n",
-			m_cLocalFNA);
-		SendCannedMsg(404, BaseFNA);
+			(LPCTSTR)m_cLocalFNA);
+		SendCannedMsg(404, (LPCTSTR)BaseFNA);
 		return (TRUE);;
 	}
 	m_pDoc->DbgMessage("\n");	// make debug msg readable
 
 	// we found a file, so send it already...
-	m_pDoc->VMessage("   Sending: %s\n", m_cLocalFNA);
+	m_pDoc->VMessage("   Sending: %s\n", (LPCTSTR)m_cLocalFNA);
 	BOOL ret = TRUE;
 	if (!bTagMsg)	// if tag message, skip the response header
 		ret = SendReplyHeader(cFile);
@@ -414,10 +414,10 @@ BOOL CClient::SendFile(CString& m_cLocalFNA, CString& BaseFNA,
 /////////////////////////////////////////////////////////////////////////////
 // CGI handler
 
-BOOL CClient::SendCGI(CString& m_cLocalFNA, CString& BaseFNA)
+BOOL CClient::SendCGI(CString& SendFNA, CString& BaseFNA)
 {
 	// This is a hook for future development. Just send 404 error for now.
-	SendCannedMsg(404, BaseFNA);
+	SendCannedMsg(404, (LPCTSTR)BaseFNA);
 	return (TRUE);
 }
 
@@ -454,7 +454,7 @@ BOOL CClient::SendData(CString& cMessage)
 BOOL CClient::SendData(LPCSTR lpszMessage)
 {
 	m_pDoc->DbgVMessage(">>>Sending client message: %s\n", lpszMessage);
-	return (SendRawData((LPVOID)lpszMessage, strlen(lpszMessage)));
+	return (SendRawData((LPVOID)lpszMessage, (int)strlen(lpszMessage)));
 }
 
 // this is for sending file data to the client
@@ -503,27 +503,27 @@ BOOL CClient::ResolveClientName(BOOL bUseDNS)
 		if (m_PeerIP == "127.0.0.1")	// hey, it's me!!!
 		{
 			m_LogRec.client = "Local loopback";
-			m_pDoc->VMessage(" Local loopback (%s)\n", m_PeerIP);
+			m_pDoc->VMessage(" Local loopback (%s)\n", (LPCTSTR)m_PeerIP);
 		}
 		else
 		{
 			if (m_PeerName = GetHostByAddr((LPCSTR)m_PeerIP))
 			{
 				m_LogRec.client = m_PeerName;
-				m_pDoc->VMessage(" %s (%s)\n", m_PeerName, m_PeerIP);
+				m_pDoc->VMessage(" %s (%s)\n", (LPCTSTR)m_PeerName, (LPCTSTR)m_PeerIP);
 			}
 			else
 			{
 				int err = WSAGetLastError();
 				m_pDoc->VMessage(" Unable to get host name: %s. Err: %d\n",
-					m_PeerIP, err);
+					(LPCTSTR)m_PeerIP, err);
 				return (FALSE);
 			}
 		}
 	}
 	else
 	{
-		m_pDoc->VMessage(" %s\n", m_PeerIP);
+		m_pDoc->VMessage(" %s\n", (LPCTSTR)m_PeerIP);
 	}
 	return (TRUE);
 }
@@ -574,7 +574,7 @@ void CClient::SendCannedMsg(int idErr, ...)
 		va_start(ptr, idErr);
 		wvsprintf(buf, fmt, ptr);
 	}
-	Send(buf, strlen(buf), 0);
+	Send(buf, (int)strlen(buf), 0);
 
 	// write log record
 	m_LogRec.status = idErr;
