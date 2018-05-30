@@ -143,8 +143,19 @@ SOURCE=..\SRC\Webster.cpp
 # Begin Source File
 
 SOURCE=..\res\Webster.rc
+
+!IF  "$(CFG)" == "Webster - Win32 Release"
+
 # ADD BASE RSC /l 0x1409 /i "\Documents and Settings\Peter\My Documents\Webster\res"
-# ADD RSC /l 0x1409 /i "C:\Documents and Settings\Peter\My Documents\Webster\res" /i "\Documents and Settings\Peter\My Documents\Webster\res"
+# ADD RSC /l 0x1409 /i "\Documents and Settings\Peter\My Documents\Webster\res" /i "C:\Documents and Settings\Peter\My Documents\Webster\res"
+
+!ELSEIF  "$(CFG)" == "Webster - Win32 Debug"
+
+# ADD BASE RSC /l 0x1409 /i "\Documents and Settings\Peter\My Documents\Webster\res"
+# ADD RSC /l 0x1409 /i "\Documents and Settings\Peter\My Documents\Webster\res" /i "C:\Documents and Settings\Peter\My Documents\Webster\res"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
@@ -161,6 +172,10 @@ SOURCE=..\H\Cclient.h
 # Begin Source File
 
 SOURCE=..\H\Clisten.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\h\Compat.h
 # End Source File
 # Begin Source File
 

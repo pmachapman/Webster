@@ -16,6 +16,11 @@
 #define _splitpath_s _splitpath
 #endif
 
+// Types
+#ifndef UINT_PTR
+#define UINT_PTR int
+#endif
+
 // Constants
 #ifndef _MAX_DRIVE
 #define _MAX_DRIVE 3
