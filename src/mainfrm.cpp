@@ -176,7 +176,11 @@ void CMainFrame::OnUnHide()
 }
 
 // This is the WM_TIMER message handler for the periodic sanity check.
+#if _MFC_VER < 0x0421
+void CMainFrame::OnTimer(UINT nIDEvent)
+#else
 void CMainFrame::OnTimer(UINT_PTR nIDEvent)
+#endif
 {
 	if (theApp.m_State == CWebApp::ST_NULL)
 		return;	// not running yet!

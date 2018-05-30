@@ -54,7 +54,11 @@ protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnProperties();
 	afx_msg void OnUnHide();
+#if _MFC_VER < 0x0421
+	afx_msg void OnTimer(UINT nIDEvent);
+#else
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
+#endif
 	afx_msg LRESULT OnNewClient(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnKillSocket(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnNewLogfile(WPARAM wParam, LPARAM lParam);

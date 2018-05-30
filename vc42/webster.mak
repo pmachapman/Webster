@@ -32,9 +32,9 @@ NULL=nul
 ################################################################################
 # Begin Project
 # PROP Target_Last_Scanned "Webster - Win32 Debug"
+RSC=rc.exe
 CPP=cl.exe
 MTL=mktyplib.exe
-RSC=rc.exe
 
 !IF  "$(CFG)" == "Webster - Win32 Release"
 
@@ -148,25 +148,38 @@ LINK32_OBJS= \
 OUTDIR=.\Debug
 INTDIR=.\Debug
 
-ALL : "$(OUTDIR)\webster.exe"
+ALL : "$(OUTDIR)\webster.exe" "$(OUTDIR)\webster.bsc"
 
 CLEAN : 
 	-@erase "$(INTDIR)\cclient.obj"
+	-@erase "$(INTDIR)\cclient.sbr"
 	-@erase "$(INTDIR)\clisten.obj"
+	-@erase "$(INTDIR)\clisten.sbr"
 	-@erase "$(INTDIR)\Config.obj"
+	-@erase "$(INTDIR)\Config.sbr"
 	-@erase "$(INTDIR)\MainFrm.obj"
+	-@erase "$(INTDIR)\MainFrm.sbr"
 	-@erase "$(INTDIR)\Props.obj"
+	-@erase "$(INTDIR)\Props.sbr"
 	-@erase "$(INTDIR)\service.obj"
+	-@erase "$(INTDIR)\service.sbr"
 	-@erase "$(INTDIR)\Splash.obj"
+	-@erase "$(INTDIR)\Splash.sbr"
 	-@erase "$(INTDIR)\StdAfx.obj"
+	-@erase "$(INTDIR)\StdAfx.sbr"
 	-@erase "$(INTDIR)\TrayNot.obj"
+	-@erase "$(INTDIR)\TrayNot.sbr"
 	-@erase "$(INTDIR)\vc40.idb"
 	-@erase "$(INTDIR)\vc40.pdb"
 	-@erase "$(INTDIR)\WebDoc.obj"
+	-@erase "$(INTDIR)\WebDoc.sbr"
 	-@erase "$(INTDIR)\Webster.obj"
 	-@erase "$(INTDIR)\webster.pch"
 	-@erase "$(INTDIR)\Webster.res"
+	-@erase "$(INTDIR)\Webster.sbr"
 	-@erase "$(INTDIR)\WebView.obj"
+	-@erase "$(INTDIR)\WebView.sbr"
+	-@erase "$(OUTDIR)\webster.bsc"
 	-@erase "$(OUTDIR)\webster.exe"
 	-@erase "$(OUTDIR)\webster.ilk"
 	-@erase "$(OUTDIR)\webster.pdb"
@@ -190,13 +203,13 @@ F90_PROJ=/I "Release/" /Fo"Release/"
    $(F90) $(F90_PROJ) $<  
 
 # ADD BASE CPP /nologo /MDd /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /Yu"stdafx.h" /c
-# ADD CPP /nologo /MTd /W3 /Gm /GX /Zi /Od /I "..\h" /I "..\res" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /Yu"stdafx.h" /c
+# ADD CPP /nologo /MTd /W3 /Gm /GX /Zi /Od /I "..\h" /I "..\res" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /FR /Yu"stdafx.h" /c
 # SUBTRACT CPP /X
 CPP_PROJ=/nologo /MTd /W3 /Gm /GX /Zi /Od /I "..\h" /I "..\res" /D "WIN32" /D\
- "_DEBUG" /D "_WINDOWS" /D "_MBCS" /Fp"$(INTDIR)/webster.pch" /Yu"stdafx.h"\
- /Fo"$(INTDIR)/" /Fd"$(INTDIR)/" /c 
+ "_DEBUG" /D "_WINDOWS" /D "_MBCS" /FR"$(INTDIR)/" /Fp"$(INTDIR)/webster.pch"\
+ /Yu"stdafx.h" /Fo"$(INTDIR)/" /Fd"$(INTDIR)/" /c 
 CPP_OBJS=.\Debug/
-CPP_SBRS=.\.
+CPP_SBRS=.\Debug/
 # ADD BASE MTL /nologo /D "_DEBUG" /win32
 # ADD MTL /nologo /D "_DEBUG" /win32
 MTL_PROJ=/nologo /D "_DEBUG" /win32 
@@ -208,7 +221,24 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 BSC32_FLAGS=/nologo /o"$(OUTDIR)/webster.bsc" 
 BSC32_SBRS= \
-	
+	"$(INTDIR)\cclient.sbr" \
+	"$(INTDIR)\clisten.sbr" \
+	"$(INTDIR)\Config.sbr" \
+	"$(INTDIR)\MainFrm.sbr" \
+	"$(INTDIR)\Props.sbr" \
+	"$(INTDIR)\service.sbr" \
+	"$(INTDIR)\Splash.sbr" \
+	"$(INTDIR)\StdAfx.sbr" \
+	"$(INTDIR)\TrayNot.sbr" \
+	"$(INTDIR)\WebDoc.sbr" \
+	"$(INTDIR)\Webster.sbr" \
+	"$(INTDIR)\WebView.sbr"
+
+"$(OUTDIR)\webster.bsc" : "$(OUTDIR)" $(BSC32_SBRS)
+    $(BSC32) @<<
+  $(BSC32_FLAGS) $(BSC32_SBRS)
+<<
+
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /debug /machine:I386
 # ADD LINK32 winmm.lib /nologo /subsystem:windows /debug /machine:I386
@@ -270,17 +300,19 @@ LINK32_OBJS= \
 # Begin Source File
 
 SOURCE=..\SRC\Webster.cpp
+
+!IF  "$(CFG)" == "Webster - Win32 Release"
+
 DEP_CPP_WEBST=\
-	"..\H\CONFIG.H"\
+	"..\H\compat.h"\
 	"..\H\LOGGER.H"\
-	"..\H\MAINFRM.H"\
-	"..\H\PROPS.H"\
-	"..\H\SPLASH.H"\
-	"..\H\STDAFX.H"\
-	"..\H\TRAYNOT.H"\
-	"..\H\WEBDOC.H"\
-	"..\H\WEBSTER.H"\
-	"..\H\WEBVIEW.H"\
+	"..\h\mainfrm.h"\
+	"..\h\Splash.h"\
+	"..\h\stdafx.h"\
+	"..\h\TrayNot.h"\
+	"..\h\webdoc.h"\
+	"..\h\webster.h"\
+	"..\h\WebView.h"\
 	
 
 "$(INTDIR)\Webster.obj" : $(SOURCE) $(DEP_CPP_WEBST) "$(INTDIR)"\
@@ -288,13 +320,44 @@ DEP_CPP_WEBST=\
    $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
+!ELSEIF  "$(CFG)" == "Webster - Win32 Debug"
+
+DEP_CPP_WEBST=\
+	"..\H\compat.h"\
+	"..\h\Config.h"\
+	"..\H\LOGGER.H"\
+	"..\h\mainfrm.h"\
+	"..\h\Props.h"\
+	"..\h\Splash.h"\
+	"..\h\stdafx.h"\
+	"..\h\TrayNot.h"\
+	"..\h\webdoc.h"\
+	"..\h\webster.h"\
+	"..\h\WebView.h"\
+	
+
+BuildCmds= \
+	$(CPP) $(CPP_PROJ) $(SOURCE) \
+	
+
+"$(INTDIR)\Webster.obj" : $(SOURCE) $(DEP_CPP_WEBST) "$(INTDIR)"\
+ "$(INTDIR)\webster.pch"
+   $(BuildCmds)
+
+"$(INTDIR)\Webster.sbr" : $(SOURCE) $(DEP_CPP_WEBST) "$(INTDIR)"\
+ "$(INTDIR)\webster.pch"
+   $(BuildCmds)
+
+!ENDIF 
+
 # End Source File
 ################################################################################
 # Begin Source File
 
 SOURCE=..\SRC\StdAfx.cpp
 DEP_CPP_STDAF=\
-	"..\H\STDAFX.H"\
+	"..\H\compat.h"\
+	"..\h\stdafx.h"\
 	
 
 !IF  "$(CFG)" == "Webster - Win32 Release"
@@ -319,11 +382,14 @@ BuildCmds= \
 
 BuildCmds= \
 	$(CPP) /nologo /MTd /W3 /Gm /GX /Zi /Od /I "..\h" /I "..\res" /D "WIN32" /D\
- "_DEBUG" /D "_WINDOWS" /D "_MBCS" /Fp"$(INTDIR)/webster.pch" /Yc"stdafx.h"\
- /Fo"$(INTDIR)/" /Fd"$(INTDIR)/" /c $(SOURCE) \
+ "_DEBUG" /D "_WINDOWS" /D "_MBCS" /FR"$(INTDIR)/" /Fp"$(INTDIR)/webster.pch"\
+ /Yc"stdafx.h" /Fo"$(INTDIR)/" /Fd"$(INTDIR)/" /c $(SOURCE) \
 	
 
 "$(INTDIR)\StdAfx.obj" : $(SOURCE) $(DEP_CPP_STDAF) "$(INTDIR)"
+   $(BuildCmds)
+
+"$(INTDIR)\StdAfx.sbr" : $(SOURCE) $(DEP_CPP_STDAF) "$(INTDIR)"
    $(BuildCmds)
 
 "$(INTDIR)\webster.pch" : $(SOURCE) $(DEP_CPP_STDAF) "$(INTDIR)"
@@ -336,15 +402,17 @@ BuildCmds= \
 # Begin Source File
 
 SOURCE=..\SRC\MainFrm.cpp
+
+!IF  "$(CFG)" == "Webster - Win32 Release"
+
 DEP_CPP_MAINF=\
-	"..\H\CONFIG.H"\
+	"..\H\compat.h"\
 	"..\H\LOGGER.H"\
-	"..\H\MAINFRM.H"\
-	"..\H\PROPS.H"\
-	"..\H\STDAFX.H"\
-	"..\H\TRAYNOT.H"\
-	"..\H\WEBDOC.H"\
-	"..\H\WEBSTER.H"\
+	"..\h\mainfrm.h"\
+	"..\h\stdafx.h"\
+	"..\h\TrayNot.h"\
+	"..\h\webdoc.h"\
+	"..\h\webster.h"\
 	
 
 "$(INTDIR)\MainFrm.obj" : $(SOURCE) $(DEP_CPP_MAINF) "$(INTDIR)"\
@@ -352,21 +420,51 @@ DEP_CPP_MAINF=\
    $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
+!ELSEIF  "$(CFG)" == "Webster - Win32 Debug"
+
+DEP_CPP_MAINF=\
+	"..\H\compat.h"\
+	"..\h\Config.h"\
+	"..\H\LOGGER.H"\
+	"..\h\mainfrm.h"\
+	"..\h\Props.h"\
+	"..\h\stdafx.h"\
+	"..\h\TrayNot.h"\
+	"..\h\webdoc.h"\
+	"..\h\webster.h"\
+	
+
+BuildCmds= \
+	$(CPP) $(CPP_PROJ) $(SOURCE) \
+	
+
+"$(INTDIR)\MainFrm.obj" : $(SOURCE) $(DEP_CPP_MAINF) "$(INTDIR)"\
+ "$(INTDIR)\webster.pch"
+   $(BuildCmds)
+
+"$(INTDIR)\MainFrm.sbr" : $(SOURCE) $(DEP_CPP_MAINF) "$(INTDIR)"\
+ "$(INTDIR)\webster.pch"
+   $(BuildCmds)
+
+!ENDIF 
+
 # End Source File
 ################################################################################
 # Begin Source File
 
 SOURCE=..\SRC\WebDoc.cpp
+
+!IF  "$(CFG)" == "Webster - Win32 Release"
+
 DEP_CPP_WEBDO=\
-	"..\H\Cclient.h"\
-	"..\H\Clisten.h"\
-	"..\H\CONFIG.H"\
+	"..\h\cclient.h"\
+	"..\h\clisten.h"\
+	"..\H\compat.h"\
 	"..\H\LOGGER.H"\
-	"..\H\PROPS.H"\
-	"..\H\STDAFX.H"\
-	"..\H\WEBDOC.H"\
-	"..\H\WEBSTER.H"\
-	"..\H\WEBVIEW.H"\
+	"..\h\stdafx.h"\
+	"..\h\webdoc.h"\
+	"..\h\webster.h"\
+	"..\h\WebView.h"\
 	
 
 "$(INTDIR)\WebDoc.obj" : $(SOURCE) $(DEP_CPP_WEBDO) "$(INTDIR)"\
@@ -374,25 +472,83 @@ DEP_CPP_WEBDO=\
    $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
+!ELSEIF  "$(CFG)" == "Webster - Win32 Debug"
+
+DEP_CPP_WEBDO=\
+	"..\h\cclient.h"\
+	"..\h\clisten.h"\
+	"..\H\compat.h"\
+	"..\h\Config.h"\
+	"..\H\LOGGER.H"\
+	"..\h\Props.h"\
+	"..\h\stdafx.h"\
+	"..\h\webdoc.h"\
+	"..\h\webster.h"\
+	"..\h\WebView.h"\
+	
+
+BuildCmds= \
+	$(CPP) $(CPP_PROJ) $(SOURCE) \
+	
+
+"$(INTDIR)\WebDoc.obj" : $(SOURCE) $(DEP_CPP_WEBDO) "$(INTDIR)"\
+ "$(INTDIR)\webster.pch"
+   $(BuildCmds)
+
+"$(INTDIR)\WebDoc.sbr" : $(SOURCE) $(DEP_CPP_WEBDO) "$(INTDIR)"\
+ "$(INTDIR)\webster.pch"
+   $(BuildCmds)
+
+!ENDIF 
+
 # End Source File
 ################################################################################
 # Begin Source File
 
 SOURCE=..\SRC\WebView.cpp
+
+!IF  "$(CFG)" == "Webster - Win32 Release"
+
 DEP_CPP_WEBVI=\
-	"..\H\CONFIG.H"\
+	"..\H\compat.h"\
 	"..\H\LOGGER.H"\
-	"..\H\PROPS.H"\
-	"..\H\STDAFX.H"\
-	"..\H\WEBDOC.H"\
-	"..\H\WEBSTER.H"\
-	"..\H\WEBVIEW.H"\
+	"..\h\stdafx.h"\
+	"..\h\webdoc.h"\
+	"..\h\webster.h"\
+	"..\h\WebView.h"\
 	
 
 "$(INTDIR)\WebView.obj" : $(SOURCE) $(DEP_CPP_WEBVI) "$(INTDIR)"\
  "$(INTDIR)\webster.pch"
    $(CPP) $(CPP_PROJ) $(SOURCE)
 
+
+!ELSEIF  "$(CFG)" == "Webster - Win32 Debug"
+
+DEP_CPP_WEBVI=\
+	"..\H\compat.h"\
+	"..\h\Config.h"\
+	"..\H\LOGGER.H"\
+	"..\h\Props.h"\
+	"..\h\stdafx.h"\
+	"..\h\webdoc.h"\
+	"..\h\webster.h"\
+	"..\h\WebView.h"\
+	
+
+BuildCmds= \
+	$(CPP) $(CPP_PROJ) $(SOURCE) \
+	
+
+"$(INTDIR)\WebView.obj" : $(SOURCE) $(DEP_CPP_WEBVI) "$(INTDIR)"\
+ "$(INTDIR)\webster.pch"
+   $(BuildCmds)
+
+"$(INTDIR)\WebView.sbr" : $(SOURCE) $(DEP_CPP_WEBVI) "$(INTDIR)"\
+ "$(INTDIR)\webster.pch"
+   $(BuildCmds)
+
+!ENDIF 
 
 # End Source File
 ################################################################################
@@ -431,16 +587,37 @@ DEP_RSC_WEBSTE=\
 
 SOURCE=..\SRC\Props.cpp
 DEP_CPP_PROPS=\
-	"..\H\CONFIG.H"\
-	"..\H\PROPS.H"\
-	"..\H\STDAFX.H"\
-	"..\H\WEBSTER.H"\
+	"..\H\compat.h"\
+	"..\h\Config.h"\
+	"..\h\Props.h"\
+	"..\h\stdafx.h"\
+	"..\h\webster.h"\
 	
+
+!IF  "$(CFG)" == "Webster - Win32 Release"
+
 
 "$(INTDIR)\Props.obj" : $(SOURCE) $(DEP_CPP_PROPS) "$(INTDIR)"\
  "$(INTDIR)\webster.pch"
    $(CPP) $(CPP_PROJ) $(SOURCE)
 
+
+!ELSEIF  "$(CFG)" == "Webster - Win32 Debug"
+
+
+BuildCmds= \
+	$(CPP) $(CPP_PROJ) $(SOURCE) \
+	
+
+"$(INTDIR)\Props.obj" : $(SOURCE) $(DEP_CPP_PROPS) "$(INTDIR)"\
+ "$(INTDIR)\webster.pch"
+   $(BuildCmds)
+
+"$(INTDIR)\Props.sbr" : $(SOURCE) $(DEP_CPP_PROPS) "$(INTDIR)"\
+ "$(INTDIR)\webster.pch"
+   $(BuildCmds)
+
+!ENDIF 
 
 # End Source File
 ################################################################################
@@ -448,14 +625,35 @@ DEP_CPP_PROPS=\
 
 SOURCE=..\SRC\Config.cpp
 DEP_CPP_CONFI=\
-	"..\H\CONFIG.H"\
-	"..\H\STDAFX.H"\
+	"..\H\compat.h"\
+	"..\h\Config.h"\
+	"..\h\stdafx.h"\
 	
+
+!IF  "$(CFG)" == "Webster - Win32 Release"
+
 
 "$(INTDIR)\Config.obj" : $(SOURCE) $(DEP_CPP_CONFI) "$(INTDIR)"\
  "$(INTDIR)\webster.pch"
    $(CPP) $(CPP_PROJ) $(SOURCE)
 
+
+!ELSEIF  "$(CFG)" == "Webster - Win32 Debug"
+
+
+BuildCmds= \
+	$(CPP) $(CPP_PROJ) $(SOURCE) \
+	
+
+"$(INTDIR)\Config.obj" : $(SOURCE) $(DEP_CPP_CONFI) "$(INTDIR)"\
+ "$(INTDIR)\webster.pch"
+   $(BuildCmds)
+
+"$(INTDIR)\Config.sbr" : $(SOURCE) $(DEP_CPP_CONFI) "$(INTDIR)"\
+ "$(INTDIR)\webster.pch"
+   $(BuildCmds)
+
+!ENDIF 
 
 # End Source File
 ################################################################################
@@ -463,32 +661,55 @@ DEP_CPP_CONFI=\
 
 SOURCE=..\SRC\clisten.CPP
 DEP_CPP_CLIST=\
-	"..\H\Clisten.h"\
+	"..\h\clisten.h"\
+	"..\H\compat.h"\
 	"..\H\LOGGER.H"\
-	"..\H\STDAFX.H"\
-	"..\H\WEBDOC.H"\
+	"..\h\stdafx.h"\
+	"..\h\webdoc.h"\
 	
+
+!IF  "$(CFG)" == "Webster - Win32 Release"
+
 
 "$(INTDIR)\clisten.obj" : $(SOURCE) $(DEP_CPP_CLIST) "$(INTDIR)"\
  "$(INTDIR)\webster.pch"
    $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
+!ELSEIF  "$(CFG)" == "Webster - Win32 Debug"
+
+
+BuildCmds= \
+	$(CPP) $(CPP_PROJ) $(SOURCE) \
+	
+
+"$(INTDIR)\clisten.obj" : $(SOURCE) $(DEP_CPP_CLIST) "$(INTDIR)"\
+ "$(INTDIR)\webster.pch"
+   $(BuildCmds)
+
+"$(INTDIR)\clisten.sbr" : $(SOURCE) $(DEP_CPP_CLIST) "$(INTDIR)"\
+ "$(INTDIR)\webster.pch"
+   $(BuildCmds)
+
+!ENDIF 
+
 # End Source File
 ################################################################################
 # Begin Source File
 
 SOURCE=..\SRC\cclient.CPP
+
+!IF  "$(CFG)" == "Webster - Win32 Release"
+
 DEP_CPP_CCLIE=\
-	"..\H\Cclient.h"\
-	"..\H\CONFIG.H"\
+	"..\h\cclient.h"\
+	"..\H\compat.h"\
 	"..\H\LOGGER.H"\
-	"..\H\MAINFRM.H"\
-	"..\H\PROPS.H"\
-	"..\H\STDAFX.H"\
-	"..\H\TRAYNOT.H"\
-	"..\H\WEBDOC.H"\
-	"..\H\WEBSTER.H"\
+	"..\h\mainfrm.h"\
+	"..\h\stdafx.h"\
+	"..\h\TrayNot.h"\
+	"..\h\webdoc.h"\
+	"..\h\webster.h"\
 	
 
 "$(INTDIR)\cclient.obj" : $(SOURCE) $(DEP_CPP_CCLIE) "$(INTDIR)"\
@@ -496,21 +717,52 @@ DEP_CPP_CCLIE=\
    $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
+!ELSEIF  "$(CFG)" == "Webster - Win32 Debug"
+
+DEP_CPP_CCLIE=\
+	"..\h\cclient.h"\
+	"..\H\compat.h"\
+	"..\h\Config.h"\
+	"..\H\LOGGER.H"\
+	"..\h\mainfrm.h"\
+	"..\h\Props.h"\
+	"..\h\stdafx.h"\
+	"..\h\TrayNot.h"\
+	"..\h\webdoc.h"\
+	"..\h\webster.h"\
+	
+
+BuildCmds= \
+	$(CPP) $(CPP_PROJ) $(SOURCE) \
+	
+
+"$(INTDIR)\cclient.obj" : $(SOURCE) $(DEP_CPP_CCLIE) "$(INTDIR)"\
+ "$(INTDIR)\webster.pch"
+   $(BuildCmds)
+
+"$(INTDIR)\cclient.sbr" : $(SOURCE) $(DEP_CPP_CCLIE) "$(INTDIR)"\
+ "$(INTDIR)\webster.pch"
+   $(BuildCmds)
+
+!ENDIF 
+
 # End Source File
 ################################################################################
 # Begin Source File
 
 SOURCE=..\SRC\service.cpp
+
+!IF  "$(CFG)" == "Webster - Win32 Release"
+
 DEP_CPP_SERVI=\
-	"..\H\Cclient.h"\
-	"..\H\CONFIG.H"\
+	"..\h\cclient.h"\
+	"..\H\compat.h"\
 	"..\H\LOGGER.H"\
-	"..\H\MAINFRM.H"\
-	"..\H\PROPS.H"\
-	"..\H\STDAFX.H"\
-	"..\H\TRAYNOT.H"\
-	"..\H\WEBDOC.H"\
-	"..\H\WEBSTER.H"\
+	"..\h\mainfrm.h"\
+	"..\h\stdafx.h"\
+	"..\h\TrayNot.h"\
+	"..\h\webdoc.h"\
+	"..\h\webster.h"\
 	
 
 "$(INTDIR)\service.obj" : $(SOURCE) $(DEP_CPP_SERVI) "$(INTDIR)"\
@@ -518,17 +770,48 @@ DEP_CPP_SERVI=\
    $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
+!ELSEIF  "$(CFG)" == "Webster - Win32 Debug"
+
+DEP_CPP_SERVI=\
+	"..\h\cclient.h"\
+	"..\H\compat.h"\
+	"..\h\Config.h"\
+	"..\H\LOGGER.H"\
+	"..\h\mainfrm.h"\
+	"..\h\Props.h"\
+	"..\h\stdafx.h"\
+	"..\h\TrayNot.h"\
+	"..\h\webdoc.h"\
+	"..\h\webster.h"\
+	
+
+BuildCmds= \
+	$(CPP) $(CPP_PROJ) $(SOURCE) \
+	
+
+"$(INTDIR)\service.obj" : $(SOURCE) $(DEP_CPP_SERVI) "$(INTDIR)"\
+ "$(INTDIR)\webster.pch"
+   $(BuildCmds)
+
+"$(INTDIR)\service.sbr" : $(SOURCE) $(DEP_CPP_SERVI) "$(INTDIR)"\
+ "$(INTDIR)\webster.pch"
+   $(BuildCmds)
+
+!ENDIF 
+
 # End Source File
 ################################################################################
 # Begin Source File
 
 SOURCE=..\SRC\Splash.cpp
+
+!IF  "$(CFG)" == "Webster - Win32 Release"
+
 DEP_CPP_SPLAS=\
-	"..\H\CONFIG.H"\
-	"..\H\PROPS.H"\
-	"..\H\SPLASH.H"\
-	"..\H\STDAFX.H"\
-	"..\H\WEBSTER.H"\
+	"..\H\compat.h"\
+	"..\h\Splash.h"\
+	"..\h\stdafx.h"\
+	"..\h\webster.h"\
 	
 
 "$(INTDIR)\Splash.obj" : $(SOURCE) $(DEP_CPP_SPLAS) "$(INTDIR)"\
@@ -536,20 +819,66 @@ DEP_CPP_SPLAS=\
    $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
+!ELSEIF  "$(CFG)" == "Webster - Win32 Debug"
+
+DEP_CPP_SPLAS=\
+	"..\H\compat.h"\
+	"..\h\Config.h"\
+	"..\h\Props.h"\
+	"..\h\Splash.h"\
+	"..\h\stdafx.h"\
+	"..\h\webster.h"\
+	
+
+BuildCmds= \
+	$(CPP) $(CPP_PROJ) $(SOURCE) \
+	
+
+"$(INTDIR)\Splash.obj" : $(SOURCE) $(DEP_CPP_SPLAS) "$(INTDIR)"\
+ "$(INTDIR)\webster.pch"
+   $(BuildCmds)
+
+"$(INTDIR)\Splash.sbr" : $(SOURCE) $(DEP_CPP_SPLAS) "$(INTDIR)"\
+ "$(INTDIR)\webster.pch"
+   $(BuildCmds)
+
+!ENDIF 
+
 # End Source File
 ################################################################################
 # Begin Source File
 
 SOURCE=..\SRC\TrayNot.cpp
 DEP_CPP_TRAYN=\
-	"..\H\STDAFX.H"\
-	"..\H\TRAYNOT.H"\
+	"..\H\compat.h"\
+	"..\h\stdafx.h"\
+	"..\h\TrayNot.h"\
 	
+
+!IF  "$(CFG)" == "Webster - Win32 Release"
+
 
 "$(INTDIR)\TrayNot.obj" : $(SOURCE) $(DEP_CPP_TRAYN) "$(INTDIR)"\
  "$(INTDIR)\webster.pch"
    $(CPP) $(CPP_PROJ) $(SOURCE)
 
+
+!ELSEIF  "$(CFG)" == "Webster - Win32 Debug"
+
+
+BuildCmds= \
+	$(CPP) $(CPP_PROJ) $(SOURCE) \
+	
+
+"$(INTDIR)\TrayNot.obj" : $(SOURCE) $(DEP_CPP_TRAYN) "$(INTDIR)"\
+ "$(INTDIR)\webster.pch"
+   $(BuildCmds)
+
+"$(INTDIR)\TrayNot.sbr" : $(SOURCE) $(DEP_CPP_TRAYN) "$(INTDIR)"\
+ "$(INTDIR)\webster.pch"
+   $(BuildCmds)
+
+!ENDIF 
 
 # End Source File
 # End Target

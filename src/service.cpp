@@ -507,7 +507,8 @@ BOOL CClient::ResolveClientName(BOOL bUseDNS)
 		}
 		else
 		{
-			if (m_PeerName = GetHostByAddr((LPCSTR)m_PeerIP))
+			m_PeerName = GetHostByAddr((LPCSTR)m_PeerIP);
+			if (m_PeerName.IsEmpty() != TRUE)
 			{
 				m_LogRec.client = m_PeerName;
 				m_pDoc->VMessage(" %s (%s)\n", (LPCTSTR)m_PeerName, (LPCTSTR)m_PeerIP);
