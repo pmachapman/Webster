@@ -17,7 +17,7 @@
 #endif
 
 // Types
-#ifndef UINT_PTR
+#ifndef _MSC_VER < 1200
 #define UINT_PTR int
 #endif
 
