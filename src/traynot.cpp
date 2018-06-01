@@ -60,7 +60,7 @@ CTrayNot::CTrayNot(CWnd* pWnd, UINT uCallbackMessage,
 	m_tnd.uID = 0;
 	m_tnd.uFlags = NIF_MESSAGE | NIF_ICON | NIF_TIP;
 	m_tnd.uCallbackMessage = uCallbackMessage;
-	strcpy_s(m_tnd.szTip, strlen(m_tnd.szTip), szTip);
+	strcpy_s(m_tnd.szTip, sizeof(m_tnd.szTip), szTip);
 
 	// save the pointer to the icon list and set the initial
 	// default icon.
