@@ -16,16 +16,16 @@
 #include "WebDoc.h"
 #include <mmsystem.h>	// PlaySound()
 
+/////////////////////////////////////////////////////////////////////////////
+// CMainFrame
+
+IMPLEMENT_DYNCREATE(CMainFrame, CFrameWnd)
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
-
-/////////////////////////////////////////////////////////////////////////////
-// CMainFrame
-
-IMPLEMENT_DYNCREATE(CMainFrame, CFrameWnd)
 
 BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	//{{AFX_MSG_MAP(CMainFrame)
@@ -42,10 +42,12 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_MESSAGE(WM_IDLEUPDATECMDUI, OnIdleUpdateCmdUI)
 	//}}AFX_MSG_MAP
 	// Global help commands
+#if _MFC_VER >= 0x0300
 	ON_COMMAND(ID_HELP_FINDER, CFrameWnd::OnHelpFinder)
+	ON_COMMAND(ID_DEFAULT_HELP, CFrameWnd::OnHelpFinder)
+#endif
 	ON_COMMAND(ID_HELP, CFrameWnd::OnHelp)
 	ON_COMMAND(ID_CONTEXT_HELP, CFrameWnd::OnContextHelp)
-	ON_COMMAND(ID_DEFAULT_HELP, CFrameWnd::OnHelpFinder)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -84,13 +86,14 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CFrameWnd::OnCreate(lpCreateStruct) == -1)
 		return -1;
+#if _MFC_VER >= 0x0300
 	if (!m_wndToolBar.Create(this) ||
 		!m_wndToolBar.LoadToolBar(IDR_MAINFRAME))
 	{
 		TRACE0("Failed to create toolbar\n");
 		return -1;      // fail to create
 	}
-
+#endif
 	if (!m_wndStatusBar.Create(this) ||
 		!m_wndStatusBar.SetIndicators(indicators,
 			sizeof(indicators) / sizeof(UINT)))
@@ -98,12 +101,13 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		TRACE0("Failed to create status bar\n");
 		return -1;      // fail to create
 	}
+#if _MFC_VER >= 0x0300
 	m_wndToolBar.SetBarStyle(m_wndToolBar.GetBarStyle() |
 		CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC);
 	m_wndToolBar.EnableDocking(CBRS_ALIGN_ANY);
 	EnableDocking(CBRS_ALIGN_ANY);
 	DockControlBar(&m_wndToolBar);
-
+#endif
 	// load icon onto taskbar tray
 	m_pTray = new CTrayNot(this, WM_MY_NOTIFY,
 		"Webster", theApp.m_pIconList);
@@ -228,7 +232,9 @@ LRESULT CMainFrame::OnNewClient(WPARAM wParam, LPARAM lParam)
 	if (theApp.m_bEnableSound)	// do the audible notification
 	{
 		// if we don't support sound, use the system beeper
+#if _MFC_VER >= 0x0300
 		if (!::PlaySound("SystemDefault", NULL, SND_ALIAS | SND_ASYNC))
+#endif
 			MessageBeep(0xffffffff);
 	}
 	return (0);

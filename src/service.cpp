@@ -11,7 +11,9 @@
 #include "resource.h"	// IDS_ id's
 #include "webster.h"	// CWebApp
 #include "mainfrm.h"	// CMainFrame
-
+#if _MFC_VER < 0x0400
+#include <stdarg.h>
+#endif
 
 // This routine collects the request from the client
 BOOL CClient::ProcessPendingRead()
@@ -123,8 +125,13 @@ void CClient::ParseReq()
 
 	// parse the request line into a list of tokens
 	LPSTR tempmsg = new char[cReq.GetLength() + 1];	// allow for EOS
+#if _MFC_VER < 0x0300
+	strcpy((char __near *)tempmsg, cReq);
+	char *pBOL = (char __near *)tempmsg;
+#else
 	strcpy_s(tempmsg, cReq.GetLength() + 1, cReq);
 	char *pBOL = tempmsg;
+#endif
 	for (char *pEOL = strpbrk(pBOL, " ");
 		pEOL;
 		pEOL = strpbrk(pBOL, " "))
@@ -300,10 +307,14 @@ BOOL CClient::SendReplyHeader(CFile& cFile)
 	SendData("MIME-version: 1.0\r\n");
 	// 5
 	char	gcDrive[_MAX_DRIVE],
-			gcDir[_MAX_PATH],
-			gcFname[_MAX_FNAME],
-			gcExt[_MAX_EXT];
+		gcDir[_MAX_PATH],
+		gcFname[_MAX_FNAME],
+		gcExt[_MAX_EXT];
+#if _MFC_VER < 0x300
+	_splitpath_s(m_cLocalFNA, gcDrive, gcDir, gcFname, gcExt);
+#else
 	_splitpath_s(cFile.GetFileName(), gcDrive, gcDir, gcFname, gcExt);
+#endif
 	tmp = gcExt;
 	for (int i = 0; i < MIME_len; i++)
 	{
@@ -433,14 +444,14 @@ BOOL CClient::SendRawData(LPVOID lpMessage, int count)
 	{
 		sockFile.Write(lpMessage, count);
 	}
-		CATCH(CFileException, e)
+	CATCH(CFileException, e)
 	{
 		m_pDoc->VMessage("Failed to write raw to client socket!\n");
 		m_pDoc->VMessage("   >>> %s\n", theApp.MapErrMsg(GetLastError()));
 		return (FALSE);;
 	}
-	END_TRY
-		sockFile.Flush();
+	END_CATCH
+	sockFile.Flush();
 	return (TRUE);
 }
 
@@ -454,7 +465,11 @@ BOOL CClient::SendData(CString& cMessage)
 BOOL CClient::SendData(LPCSTR lpszMessage)
 {
 	m_pDoc->DbgVMessage(">>>Sending client message: %s\n", lpszMessage);
+#if _MFC_VER < 0x0300
+	return (SendRawData((LPVOID)lpszMessage, (int)strlen((char __near *)lpszMessage)));
+#else
 	return (SendRawData((LPVOID)lpszMessage, (int)strlen(lpszMessage)));
+#endif
 }
 
 // this is for sending file data to the client
@@ -480,7 +495,7 @@ BOOL CClient::SendData(CFile& cFile)
 				theApp.MapErrMsg(GetLastError()));
 			return (FALSE);
 		}
-		END_TRY
+		END_CATCH
 	}
 	sockFile.Flush();
 	return (TRUE);

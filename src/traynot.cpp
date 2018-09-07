@@ -54,6 +54,7 @@ CTrayNot::CTrayNot(CWnd* pWnd, UINT uCallbackMessage,
 	if (!m_bEnabled)
 		return;
 
+#if _MFC_VER > 0x300
 	// load up the NOTIFYICONDATA structure
 	m_tnd.cbSize = sizeof(NOTIFYICONDATA);
 	m_tnd.hWnd = pWnd->GetSafeHwnd();
@@ -67,18 +68,23 @@ CTrayNot::CTrayNot(CWnd* pWnd, UINT uCallbackMessage,
 	m_pIconList = pList;
 	m_tnd.hIcon = m_pIconList[0];
 	Shell_NotifyIcon(NIM_ADD, &m_tnd);
+#endif
 }
 
 CTrayNot::~CTrayNot()
 {
+#if _MFC_VER > 0x300
 	if (m_bEnabled)
 		Shell_NotifyIcon(NIM_DELETE, &m_tnd);
+#endif
 }
 
 void CTrayNot::SetState(int id)
 {
 	if (!m_bEnabled)
 		return;
+#if _MFC_VER > 0x300
 	m_tnd.hIcon = m_pIconList[id];
 	Shell_NotifyIcon(NIM_MODIFY, &m_tnd);
+#endif
 }

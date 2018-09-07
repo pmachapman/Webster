@@ -64,17 +64,21 @@ BOOL CWebApp::InitInstance()
 	//  of your final executable, you should remove from the following
 	//  the specific initialization routines you do not need.
 
+#if _MFC_VER >= 0x0300 && _MFC_VER < 0x0700
 #ifdef _AFXDLL
 	Enable3dControls();			// Call this when using MFC in a shared DLL
-#elif _MFC_VER < 0x0700
+#else
 	Enable3dControlsStatic();	// Call this when linking to MFC statically
+#endif
 #endif
 
 	// use the registry - do this before LoadStdProfileSettings()
+#if _MFC_VER >= 0x0300
 	SetRegistryKey(IDS_REG_STRING);
 #if _MFC_VER < 0x0400
 	HKEY hKey = GetAppRegistryKey();	// this creates the key initally
 	RegCloseKey(hKey);
+#endif
 #endif
 	LoadStdProfileSettings();  // Load standard INI file options (including MRU)
 	LoadProps();				// Load all other application-specific properties
@@ -117,6 +121,7 @@ BOOL CWebApp::InitInstance()
 		WriteProfileInt("", "StartTip", dlg.m_bNoNag);
 	}
 
+#if _MFC_VER > 0x0300
 	// Parse command line for standard shell commands, DDE, file open
 	CCommandLineInfo cmdInfo;
 	ParseCommandLine(cmdInfo);
@@ -124,6 +129,7 @@ BOOL CWebApp::InitInstance()
 	// Dispatch commands specified on the command line
 	if (!ProcessShellCommand(cmdInfo))
 		return FALSE;
+#endif
 
 	return TRUE;
 }
@@ -296,7 +302,7 @@ static const int _WSATableLen = sizeof(_WSATable) / sizeof(struct _tagWSATable);
 LPSTR CWebApp::MapErrMsg(DWORD dwErr)
 {
 	// __declspec (thread) necessary if you will use multiple threads
-#if __BORLANDC__
+#if __BORLANDC__ || _MFC_VER < 0x300
 	static char szMsgBuf[128];
 #else
 	__declspec (thread) static char szMsgBuf[128];
@@ -319,6 +325,7 @@ LPSTR CWebApp::MapErrMsg(DWORD dwErr)
 	{
 		// default message in case FormatMessage fails
 		wsprintf(szMsgBuf, "Error %ld", dwErr);
+#if _MFC_VER >= 0x300
 		::FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM,
 			NULL,
 			dwErr,
@@ -326,6 +333,7 @@ LPSTR CWebApp::MapErrMsg(DWORD dwErr)
 			szMsgBuf,
 			sizeof(szMsgBuf),
 			NULL);
+#endif
 	}
 	return (szMsgBuf);
 }

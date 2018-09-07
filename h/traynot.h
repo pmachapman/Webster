@@ -17,8 +17,12 @@ public:
 
 	// Attributes
 public:
-	BOOL				m_bEnabled;	// does O/S support tray icon?
+	BOOL			m_bEnabled;		// does O/S support tray icon?
+#if _MFC_VER > 0x300
 	NOTIFYICONDATA	m_tnd;
+#else
+	CWnd*	m_tnd;
+#endif
 	HICON*			m_pIconList;	// caller's list of status icons
 
 // Operations

@@ -17,18 +17,19 @@
 #if _MFC_VER < 0x0400
 // for CSocket "dead socket" race condx in MFC 3.0
 #include "afxpriv.h"	// WM_SOCKET_xxx
-#endif
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+#include <stdarg.h>
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
 // CWebDoc
 
 IMPLEMENT_DYNCREATE(CWebDoc, CDocument)
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
 
 BEGIN_MESSAGE_MAP(CWebDoc, CDocument)
 	//{{AFX_MSG_MAP(CWebDoc)
@@ -248,11 +249,13 @@ void CWebDoc::KillSocket(CClient* pSocket)
 			// AsyncSelect causes accvio after Send has failed
 			if (pSocket->AsyncSelect(0) == 0)
 			{
+#if _MFC_VER > 0x300
 				DWORD err = GetLastError();
 				CString msg;
 				msg.Format("Listener socket cancelled: %s\n",
 					theApp.MapErrMsg(err));
 				Message(msg);
+#endif
 			}
 			pSocket->Close();	//...debug...
 //(dec)...end of debug...
@@ -392,7 +395,11 @@ void CWebDoc::DbgVMessage(LPCTSTR lpszFormat, ...)
 
 /////////////////////////////////////////////////////////////////////////////
 // Class-Private handlers
+#if _MFC_VER < 0x0300
+void CWebDoc::SetTitle(const char* lpszTitle)
+#else
 void CWebDoc::SetTitle(LPCTSTR lpszTitle)
+#endif
 {
 	CDocument::SetTitle(lpszTitle);
 }

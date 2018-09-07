@@ -108,19 +108,25 @@ public:
 			NI_MAXHOST, servInfo, NI_MAXSERV, NI_NUMERICSERV);
 		return hostname;
 #else
-			// translate dotted string format into integer
-			struct hostent* host;
-			int uPeer[4];
-			sscanf_s(lpszIP, "%d.%d.%d.%d",
-				&uPeer[0], &uPeer[1], &uPeer[2], &uPeer[3]);
-
+		// translate dotted string format into integer
+		struct hostent* host;
+		int uPeer[4];
+#if _MFC_VER < 0x0300
+		sscanf_s((char __near *)lpszIP, "%d.%d.%d.%d", &uPeer[0], &uPeer[1], &uPeer[2], &uPeer[3]);
+#else
+		sscanf_s(lpszIP, "%d.%d.%d.%d", &uPeer[0], &uPeer[1], &uPeer[2], &uPeer[3]);
+#endif
 			// move it into a char array for ::gethostbyaddr()
-			char cPeer[4];
-			cPeer[0] = uPeer[0];
-			cPeer[1] = uPeer[1];
-			cPeer[2] = uPeer[2];
-			cPeer[3] = uPeer[3];
+		char cPeer[4];
+		cPeer[0] = uPeer[0];
+		cPeer[1] = uPeer[1];
+		cPeer[2] = uPeer[2];
+		cPeer[3] = uPeer[3];
+#if _MFC_VER < 0x0300
+		if (host = (struct hostent __near *)::gethostbyaddr((char __near *)cPeer, 4, PF_INET))
+#else
 		if (host = ::gethostbyaddr(cPeer, 4, PF_INET))
+#endif
 		{
 			return host->h_name;
 		}

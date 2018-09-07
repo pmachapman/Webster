@@ -11,16 +11,16 @@
 #include "WebDoc.h"
 #include "WebView.h"
 
+/////////////////////////////////////////////////////////////////////////////
+// CWebView
+
+IMPLEMENT_DYNCREATE(CWebView, CScrollView)
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
-
-/////////////////////////////////////////////////////////////////////////////
-// CWebView
-
-IMPLEMENT_DYNCREATE(CWebView, CScrollView)
 
 BEGIN_MESSAGE_MAP(CWebView, CScrollView)
 	//{{AFX_MSG_MAP(CWebView)

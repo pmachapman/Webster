@@ -63,7 +63,11 @@ public:
 	virtual BOOL OnNewDocument();
 	virtual void Serialize(CArchive& ar);
 	virtual void OnCloseDocument();
+#if _MFC_VER < 0x0300
+	virtual void SetTitle(const char* lpszTitle);
+#else
 	virtual void SetTitle(LPCTSTR lpszTitle);
+#endif
 	//}}AFX_VIRTUAL
 
 // Implementation
