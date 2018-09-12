@@ -93,7 +93,7 @@ public:
 	void SendCannedMsg(int idErr, ...);
 	inline CString GetHostByAddr(LPCSTR lpszIP)
 	{
-#ifdef _WINSOCK2API_
+#if defined(_WINSOCK2API_) && WINVER >= 0x600
 		struct sockaddr_in saGNI;
 		char hostname[NI_MAXHOST];
 		char servInfo[NI_MAXSERV];
