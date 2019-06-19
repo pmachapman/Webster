@@ -45,6 +45,7 @@ CWebDoc::CWebDoc()
 	m_nLines = 0;
 	m_nMaxLines = 100;
 	m_strInfo.Empty();	// make sure we start off clean
+	m_pSocket = NULL;
 }
 
 CWebDoc::~CWebDoc()
@@ -347,7 +348,7 @@ void CWebDoc::Message(CString cStr)
 
 		// purge excess messages
 		while (m_strList.GetCount() >= m_nMaxLines)
-			m_strList.RemoveHead();
+			CString removed = m_strList.RemoveHead();
 
 		m_strList.AddTail(cTemp);
 		bUpdate = TRUE;

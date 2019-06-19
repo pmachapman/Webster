@@ -74,7 +74,8 @@ CMainFrame::CMainFrame()
 #else
 	m_bWin95 = TRUE;
 #endif
-	m_bHidden = m_bWin95;	// if (b_Win95) m_bHidden is TRUE	
+	m_bHidden = m_bWin95;	// if (b_Win95) m_bHidden is TRUE
+	m_nSanityTime = 0;
 	m_pTray = NULL;
 }
 

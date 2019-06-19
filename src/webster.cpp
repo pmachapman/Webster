@@ -41,6 +41,17 @@ CWebApp::CWebApp()
 {
 	m_bOkToClose = TRUE;	// for overriding WM_CLOSE
 	m_State = ST_NULL;	// not running yet
+	m_bDebugOutput = 0;
+	m_bEnableIcon = 1;
+	m_bEnableSound = 1;
+	m_bLogEnable = 1;
+	m_bResolveClientname = 0;
+	m_bShowStatus = 1;
+	m_nMaxConnects = 10;
+	m_nSanityTime = 60;
+	m_nTagType = TAG_AUTO;
+	m_nTimeOut = 600;
+	m_wwwPort = 80;
 }
 
 /////////////////////////////////////////////////////////////////////////////

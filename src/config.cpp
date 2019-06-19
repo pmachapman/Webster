@@ -165,6 +165,8 @@ CAlert::CAlert() : CPropertyPage(CAlert::IDD)
 	//{{AFX_DATA_INIT(CAlert)
 	m_bEnableSound = FALSE;
 	m_bEnableIcon = FALSE;
+	m_hActive = NULL;
+	m_hIdle = NULL;
 	//}}AFX_DATA_INIT
 }
 

@@ -145,7 +145,7 @@ void CClient::ParseReq()
 	// save whatever's left as the last token
 	CString tempToken(pBOL, (int)strlen(pBOL));
 	cList.AddTail(tempToken);
-	delete tempmsg;
+	delete[] tempmsg;
 
 	POSITION pos = cList.GetHeadPosition();	// prepare to scan the request
 
